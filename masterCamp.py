@@ -25,7 +25,8 @@ class Ship():
     def __init__(self, name, size, pos_x, pos_y, way, move,):
         self.name = name        # Nom du bateau
         self.size = size        # Taille du bateau 
-        self.position = [pos_x,pos_y]   # Coordonnée X Y du point de base du bateau
+        self.x = pos_x          # LIGNE
+        self.y = pos_y          # COLONNE
         self.way = way          # Orientation du Bateau (N S O E)
         self.health = size      # PV Actuelle du bateau (basé initialement sur la taille du bateau)
         self.maxhealth = size   # PV Maximal/Initial du bateau 
@@ -66,12 +67,20 @@ class Player():
         if s not in self.ship:
             self.ship.append(s)
 
-    # Ajoute la base du joueur, uniquement si il en avait pas
+    # Ajoute la base du joueur, uniquement s'il en avait pas
     def addBase(self, b:Base):
         if self.base == []:
             self.base = b
 
-    
+    #FAIRE UNE FONCTION POUR RETROUVER UN BATEAU EN FONCTION DES COORDONNEES
+    def Shoot(self, s: Ship, w: Weapon, way):
+        match way:
+            case "N":
+                for i in range(i,w.range):
+                    if(s.x + i != "* "):
+                        TODO
+
+
 
 p1 = Player("p1")
 s1 = Ship("b1", 3, 5, 5, "N", 3, 2)
