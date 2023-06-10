@@ -1,5 +1,8 @@
 from base import *
+from ship import *
+from placement import * 
 import random
+
 
 class Map: 
     #Definition de la taille des bases
@@ -10,6 +13,7 @@ class Map:
     def __init__(self, size):
         self.size = size
         self.bases = []
+        self.ships = []
 
     #Creation de la matrice correspondant à la carte
     def createMap(self):
@@ -19,6 +23,7 @@ class Map:
     def displayMap(self):
         for row in self.map:
             print(' '.join(row))
+        print()
 
     #Creation des bases de manière aléatoire
     def initializeBase(self):
@@ -47,14 +52,38 @@ class Map:
 
                 self.map[start_pos_B2][self.size - 1 - j] = b2.base[i][j]
             start_pos_B2 += 1
+    
+    def initializeShips(self):
 
+        #On place des bateaux de taille 2,3,4,5
+        for i in range (2,6):
+            
+            #Création d'un bateau de coordonées et de direction aléatoire
+            s1 = randomShip(i,self.size,self.map)
+            self.ships.append(s1)
 
+            #Placé selon sa direction
+            placeShip(self.map, s1)
         
+        #On va recopier le nombre de bateaux présents
+        ship_number = len(self.ships)
+        for j in range (ship_number):
+            
+            #On créer les bateaux symétriques
+            s2 = symmetricalShip(self.ships[j],self.size)
+            self.ships.append(s2)
 
-m1 = Map(31)
+            #On les place
+            placeShip(self.map, s2)
+            
+
+m1 = Map(41)
 m1.createMap()
 m1.initializeBase()
 m1.displayMap()
+m1.initializeShips()
+m1.displayMap()
+
 
 
 
