@@ -16,6 +16,7 @@ win.fill((242, 251, 255))
 # zone de jeu (rectangle avec bord rond)
 def drawMapZone():
     pygame.draw.rect(win, (0, 0, 0), (80, 20, 1020, 1020), 5, border_radius=10)
+    
 
 
 # zone d'action (rectangle à gauche)
@@ -37,6 +38,7 @@ def drawInfosZone():
     win.blit(PlayerText, (1230, 20+15+180+50))
     win.blit(PlayerName, (1370, 20+15+180+40))
 
+    chooseAction()
     # Bouton Déplacer et Tirer (séparer les boutons de 80px et les centrer)
     DeplacerButton = pygame.image.load("./assets/DéplacerButton.png")
     DeplacerButton = pygame.transform.scale(DeplacerButton, (200, 70))
@@ -60,7 +62,6 @@ def drawInfosZone():
     win.blit(ReculerIcon, (1340, 675))
 
     #Icon des tirs
-
     Weapon1Icon = pygame.image.load("./assets/Weapon1.png")
     Weapon1Icon = pygame.transform.scale(Weapon1Icon, (80, 80))
     win.blit(Weapon1Icon, (1628, 475))
@@ -84,22 +85,31 @@ def drawBoat():
 
 #Appeler les fonctions d'affichage
 def drawAll():
-    drawMapZone()
     drawInfosZone()
+    drawMapZone()
     drawBoat()
 
 
-# Lancemenent du jeu (si echap, quitter le jeu)
-running = True
+# Initialisation de la carte et des bases 
+size = 31 # taille de la carte (chsoisir un nombre impair)
+m1 = Map(size)
+m1.createMap()
+m1.initializeBase()
+# m1.initializeShips()
+m1.displayMap()
 
+running = True # variable pour lancer le jeu
+
+# Lancemenent du jeu (si echap, quitter le jeu)
 while running:
     for event in pygame.event.get():
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
                 running = False
 
+    
     drawAll()
-    chooseAction()
+    drawMap(win, m1, size)
     pygame.display.update()
 
 

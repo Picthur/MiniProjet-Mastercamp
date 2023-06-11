@@ -14,6 +14,7 @@ class Map:
         self.size = size
         self.bases = []
         self.ships = []
+        self.map = []
 
     #Creation de la matrice correspondant à la carte
     def createMap(self):
@@ -77,12 +78,12 @@ class Map:
             placeShip(self.map, s2)
             
 
-m1 = Map(41)
-m1.createMap()
-m1.initializeBase()
-m1.displayMap()
-m1.initializeShips()
-m1.displayMap()
+# m1 = Map(41)
+# m1.createMap()
+# m1.initializeBase()
+# m1.displayMap()
+# m1.initializeShips()
+# m1.displayMap()
 
 
 
