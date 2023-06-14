@@ -1,14 +1,12 @@
 import pygame
 
+from base import *
+from ship import *
+from placement import * 
+from map import *
+import random
+
 pygame.init()
-
-class Base:
-    def __init__(self, name):
-        self.base = [[name]*4 for i in range(5)]
-
-    def displayBase(self):  
-        for i in range (len(self.base)):
-            print(self.base[i])
 
 #Class Weapon : les différentes armes possédé par un joueur
 class Weapon():
@@ -21,29 +19,22 @@ class Weapon():
 
 # Class Bateau : les différents bateaux possédé par un joueur
 class Ship():
-    id = 0
-    def __init__(self, name, size, pos_x, pos_y, way, move,):
-        self.name = name        # Nom du bateau
+    nb = 0
+    def __init__(self, size, row, col, direction, move,):
         self.size = size        # Taille du bateau 
-        self.x = pos_x          # LIGNE
-        self.y = pos_y          # COLONNE
-        self.way = way          # Orientation du Bateau (N S O E)
+        self.row = row         # Position x du bateau
+        self.col = col         # Position y du bateau
+        self.direction = direction          # Orientation du Bateau (N S O E)
         self.health = size      # PV Actuelle du bateau (basé initialement sur la taille du bateau)
         self.maxhealth = size   # PV Maximal/Initial du bateau 
-        self.move = move        # Combien de mouvement le bateau peut faire par tours
-        Ship.id += 1            # ID du bateau qui s'incrémente lors de la création
+        self.move = move        # Combien 
+        Ship.nb += 1            # On incrémente le nombre de bateaux
+        self.id = Ship.nb       # Id correspond au ieme bateau créé
 
-    # Fonction pour faire baisser les PV du bateau attaqué en fonction des degats de l'arme attaquante
-    # Si le bateau a plus de PV, il est détruit et enlever des class Player
-    def Attacked(self, w:Weapon):
-        self.health -= w.damages
-        if(self.health <= 0):
-            del self
+    def get_id(self):
+        return self.id
 
-    #TODO
-    def Coordonne(self):
-        coord = []
-    #def movement()
+
 
 # Class joueur: 
 class Player():
@@ -72,19 +63,7 @@ class Player():
         if self.base == []:
             self.base = b
 
-    #FAIRE UNE FONCTION POUR RETROUVER UN BATEAU EN FONCTION DES COORDONNEES
-    def Shoot(self, s: Ship, w: Weapon, way):
-        match way:
-            case "N":
-                for i in range(i,w.range):
-                    if(s.x + i != "* "):
-                        TODO
 
 
 
-p1 = Player("p1")
-s1 = Ship("b1", 3, 5, 5, "N", 3, 2)
-p1.addShip(s1)
 
-print(p1.ship[0].size)
-print(p1.__str__)
