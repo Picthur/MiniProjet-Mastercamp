@@ -77,12 +77,8 @@ class Map:
             placeShip(self.map, s2)
             
 
-m1 = Map(41)
-m1.createMap()
-m1.initializeBase()
-m1.displayMap()
-m1.initializeShips()
-m1.displayMap()
+
+
 
 
 
