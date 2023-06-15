@@ -17,11 +17,11 @@ class Map:
 
     #Creation de la matrice correspondant à la carte
     def createMap(self):
-        self.map = [["* "] * self.size for i in range (self.size)]
+        self.matrix = [["* "] * self.size for i in range (self.size)]
     
     #Affichage de la carte
     def displayMap(self):
-        for row in self.map:
+        for row in self.matrix:
             print(' '.join(row))
         print()
 
@@ -40,7 +40,7 @@ class Map:
         #On va à la position donnée et on ajoute 1 à 1 la base à la carte 
         for i in range (len(b1.base)):
             for j in range(len(b1.base[0])):
-                self.map[start_pos_B1][j] = b1.base[i][j]
+                self.matrix[start_pos_B1][j] = b1.base[i][j]
             start_pos_B1 += 1
 
         #Symétrique par rapport à la B1
@@ -50,7 +50,7 @@ class Map:
         for i in range (len(b2.base)):
             for j in range(len(b2.base[0])):
 
-                self.map[start_pos_B2][self.size - 1 - j] = b2.base[i][j]
+                self.matrix[start_pos_B2][self.size - 1 - j] = b2.base[i][j]
             start_pos_B2 += 1
     
     def initializeShips(self):
@@ -59,11 +59,11 @@ class Map:
         for i in range (2,6):
             
             #Création d'un bateau de coordonées et de direction aléatoire
-            s1 = randomShip(i,self.size,self.map)
+            s1 = randomShip(i,self.size,self.matrix)
             self.ships.append(s1)
 
             #Placé selon sa direction
-            placeShip(self.map, s1)
+            placeShip(s1, self.matrix)
         
         #On va recopier le nombre de bateaux présents
         ship_number = len(self.ships)
@@ -74,7 +74,7 @@ class Map:
             self.ships.append(s2)
 
             #On les place
-            placeShip(self.map, s2)
+            placeShip(s2, self.matrix)
             
 
 

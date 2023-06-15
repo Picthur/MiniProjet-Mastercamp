@@ -1,53 +1,55 @@
 import random
 from ship import *
+from collide import *
+
 #Place le bateau sur la carte en fonction de sa direction
-def placeShip(map,ship):
+def placeShip(ship,matrix):
     match ship.direction:
         case 'E':
-            placeShipEast(map,ship)
+            placeShipEast(ship,matrix)
         case 'N':
-            placeShipNorth(map,ship)
+            placeShipNorth(ship,matrix)
         case 'S':
-            placeShipSouth(map,ship)
+            placeShipSouth(ship,matrix)
         case 'W':
-            placeShipWest(map,ship)
+            placeShipWest(ship,matrix)
 
 #Les fonctions ci dessous placent un bateau sur la carte, avec b pour le point arrière, et f l'avant
-def placeShipEast(map,ship):
+def placeShipEast(ship,matrix):
     for i in range(ship.size):
         if(i == 0):
-            map[ship.row][ship.col + i] = "b" + str(ship.id)
+            matrix[ship.row][ship.col + i] = "b" + str(ship.id)
         elif (i == ship.size - 1):
-            map[ship.row][ship.col + i] = "f" + str(ship.id)
+            matrix[ship.row][ship.col + i] = "f" + str(ship.id)
         else:
-            map[ship.row][ship.col + i] = str(ship.id) + " "
+            matrix[ship.row][ship.col + i] = str(ship.id) + " "
 
-def placeShipNorth(map,ship):
+def placeShipNorth(ship,matrix):
     for i in range(ship.size):
         if(i == 0):
-            map[ship.row - i][ship.col] = "b" + str(ship.id)
+            matrix[ship.row - i][ship.col] = "b" + str(ship.id)
         elif (i == ship.size - 1):
-            map[ship.row - i][ship.col] = "f" + str(ship.id)
+            matrix[ship.row - i][ship.col] = "f" + str(ship.id)
         else:
-            map[ship.row - i][ship.col] = str(ship.id) + " "
+            matrix[ship.row - i][ship.col] = str(ship.id) + " "
 
-def placeShipSouth(map,ship):
+def placeShipSouth(ship,matrix):
     for i in range(ship.size):
         if(i == 0):
-            map[ship.row + i][ship.col] = "b" + str(ship.id)
+            matrix[ship.row + i][ship.col] = "b" + str(ship.id)
         elif (i == ship.size - 1):
-            map[ship.row + i][ship.col] = "f" + str(ship.id)
+            matrix[ship.row + i][ship.col] = "f" + str(ship.id)
         else:
-            map[ship.row + i][ship.col] = str(ship.id) + " "
+            matrix[ship.row + i][ship.col] = str(ship.id) + " "
 
-def placeShipWest(map,ship):
+def placeShipWest(ship,matrix):
     for i in range(ship.size):
         if(i == 0):
-            map[ship.row][ship.col - i] = "b" + str(ship.id)
+            matrix[ship.row][ship.col - i] = "b" + str(ship.id)
         elif (i == ship.size - 1):
-            map[ship.row][ship.col - i] = "f" + str(ship.id)
+            matrix[ship.row][ship.col - i] = "f" + str(ship.id)
         else:
-            map[ship.row][ship.col - i] = str(ship.id) + " "
+            matrix[ship.row][ship.col - i] = str(ship.id) + " "
 
 #Choisit aléatoirement une direction pour un bateau
 def chooseDirection(random_row, map_size):
@@ -64,43 +66,6 @@ def chooseDirection(random_row, map_size):
             return 'S'
 
 
-#Fonction de detection de colision dans un carré de 3x3 avec pour centre une coordonnée
-def willCollide(random_row, random_column, size, direction, map):
-
-    row = random_row
-    col = random_column
-
-    for i in range (size):
-
-        #Définition d'un carré de 3x3 avec pour centre la coordonée donnée à vérifier pour que les bateaux ne soient pas collés
-        toCheck = [[row-1,col-1],[row-1,col],[row-1,col+1],      
-                   [row,col-1],[row,col],[row,col+1],
-                   [row+1,col-1],[row+1,col],[row+1,col+1]]
-        
-        #On parcourt toutes les cases à check autour du point
-        for j in range(len(toCheck)):
-
-            row_pos = toCheck[j][0]
-            col_pos = toCheck[j][1]
-
-            #Si il y a quelque chose d'autre que de l'eau (*), alors il y aura une collision
-            if(map[row_pos][col_pos] != "* "):
-                return True
-
-        #On passe à la case suivante, en fonction de la direction
-        match direction:
-            case 'E':
-                col += 1
-            case 'N': 
-                row -= 1
-            case 'S': 
-                row += 1
-            case 'W':
-                col -= 1
-
-    #Sinon il n'y a pas eu de collisions
-    return False
-
 def randomShip(ship_size,map_size, map):
     
     #Création des coordonées du bateau pour pas qu'il ne soit trop au bord ou trop au milieu de la carte
@@ -111,18 +76,22 @@ def randomShip(ship_size,map_size, map):
 
     #Si le placement générera une collision, alors on rappelle la fonction pour générer une autre position aléatoire
     #La fonction prend donc en paramètres, la position, mais également la taille, la direction, ainsi que la matrice de la map pour pouvoir vérifier
-    if(willCollide(random_row, random_column, ship_size, direction, map)):
-        print("COLLIDE")
+    if(willCollideOnPlacement(random_row, random_column, ship_size, direction, map)):
         return randomShip(ship_size,map_size,map)
     
-    return Ship(ship_size,random_row,random_column,direction,1)
+    #Donne une capacité de mouvement en fonction de la taille, + c'est gros, - ça se déplace vite
+    movement = defineMovementBySize(ship_size)
+    return Ship(ship_size,random_row,random_column,direction,movement)
+
+
 
 def symmetricalShip(ship,map_size):
     
     #On recopie les attributs de l'autre bateaux, on les inverse en fonction de la map (-1 car index d'un tableau commence à 0)
     size = ship.size
     row = map_size - ship.row - 1
-    col = map_size - ship.col - 1 
+    col = map_size - ship.col - 1
+    movement = ship.movement
     
     #On inverse la direction
     match ship.direction:
@@ -133,4 +102,136 @@ def symmetricalShip(ship,map_size):
         case 'S':
             direction = 'N'
             
-    return Ship(size,row,col,direction,1)
+    return Ship(size,row,col,direction,movement)
+
+
+        
+#Les fonctions ci dessous effacent un bateau sur la carte, remplacant par * 
+def eraseShipEast(ship,matrix):
+    for i in range(ship.size):
+        matrix[ship.row][ship.col + i] = "* "
+
+def eraseShipNorth(ship,matrix):
+    for i in range(ship.size):
+        matrix[ship.row - i][ship.col] = "* "
+
+def eraseShipSouth(ship,matrix):
+    for i in range(ship.size):
+        matrix[ship.row + i][ship.col] = "* "
+
+def eraseShipWest(ship,matrix):
+    for i in range(ship.size):
+        matrix[ship.row][ship.col - i] = "* "
+
+def eraseShip(ship,matrix):
+    match ship.direction:
+        case 'E':
+            eraseShipEast(ship,matrix)
+        case 'N':
+            eraseShipNorth(ship,matrix)
+        case 'S':
+            eraseShipSouth(ship,matrix)
+        case 'W':
+            eraseShipWest(ship,matrix)
+
+
+ #retourne la vitesse que doit avoir le bateau selon sa taille
+def defineMovementBySize(size):
+    match size:
+        case 2:
+            return 4
+        case 3:
+            return 3
+        case 4:
+            return 2
+        case 5:
+            return 2
+        
+#Permet de faire avancer le bateau vers l'avant
+def moveShipForward(ship,map):
+
+    row = ship.row
+    col = ship.col
+    movement = ship.movement
+    direction = ship.direction
+
+    #On efface la position actuelle du bateau
+    eraseShip(ship,map.matrix)
+
+    #Déplacement du nombre de case correspondant à sa vitesse
+    for i in range (movement):
+
+        #Récupération de la direction
+        match direction:
+            case 'E':
+                col += 1
+            case 'N': 
+                row -= 1
+            case 'S': 
+                row += 1
+            case 'W':
+                col -= 1
+        
+        ship.set_row(row)
+        ship.set_col(col)
+
+    #Placement du bateau au bon endroit
+    placeShip(ship,map.matrix)
+
+#Même fonction qu'au dessus
+def moveShipBackward(ship,map):
+
+    row = ship.row
+    col = ship.col
+    movement = ship.movement
+    direction = ship.direction
+
+    eraseShip(ship,map.matrix)
+
+    for i in range (movement):
+
+        match direction:
+            case 'E':
+                col -= 1
+            case 'N': 
+                row += 1
+            case 'S': 
+                row -= 1
+            case 'W':
+                col += 1
+        
+        ship.set_row(row)
+        ship.set_col(col)
+
+    placeShip(ship,map.matrix)
+
+     
+def rotateShipLeft(ship):
+
+    direction = ship.direction
+
+    match direction:
+        case 'N':
+            return 'W'
+        case 'W':
+            return 'S'
+        case 'S':
+            return 'E'
+        case 'E':
+            return 'N'
+        
+def rotateShipRight(ship):
+
+    direction = ship.direction
+
+    match direction:
+        case 'N':
+            return 'E'
+        case 'E':
+            return 'S'
+        case 'S':
+            return 'W'
+        case 'W':
+            return 'N'
+
+
