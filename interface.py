@@ -78,25 +78,26 @@ def drawInfosZone():
 
 
 #Affichier les bateaux avec les images 
-def drawBoat():
+def drawShips():
     BoaImg = pygame.image.load("./assets/shipsImg/S1_5.png")
     BoaImg = pygame.transform.scale(BoaImg, (50, 100))
     win.blit(BoaImg, (0, 0))
+
 
 #Appeler les fonctions d'affichage
 def drawAll():
     drawInfosZone()
     drawMapZone()
-    drawBoat()
+    drawShips()
 
 
 # Initialisation de la carte et des bases 
 size = 31 # taille de la carte (chsoisir un nombre impair)
-m1 = Map(size)
-m1.createMap()
-m1.initializeBase()
-# m1.initializeShips()
-m1.displayMap()
+m = Map(size)
+m.createMap()
+m.initializeBase()
+m.initializeShips()
+m.displayMap()
 
 running = True # variable pour lancer le jeu
 
@@ -109,7 +110,7 @@ while running:
 
     
     drawAll()
-    drawMap(win, m1, size)
+    drawMap(win, m, size)
     pygame.display.update()
 
 

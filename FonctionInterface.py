@@ -6,8 +6,87 @@ from pygame.event import get
 from pygame.mouse import get_pos, get_pressed
 from map import *
 from base import *
+from ship import *
+from placement import *
+from game import *
+from player import *
 pygame.init()
 
+# def drawShips(win, ships, square_size, margin, space_size):
+#     for ship in ships:
+#         if ship.direction == 'N':
+#             BoatImg = pygame.image.load("./assets/shipsImg/S1_" + str(ship.size) + ".png")
+#             BoatImg = pygame.transform.scale(BoatImg, (40, (square_size + space_size)*ship.size))
+
+#             x = 80 + margin + ship.col * (square_size + space_size)
+#             y = 20 + margin + ship.row * (square_size + space_size)
+
+#             pygame.draw.rect(win, (0, 71, 255), (x, y, 4, 4))
+#         # elif ship.direction == 'E':
+#         #     BoatImg = pygame.image.load("./assets/shipsImg/S1_" + str(ship.size) + ".png")
+#         #     BoatImg = pygame.transform.scale(BoatImg, (50, 100))
+#         #     BoatImg = pygame.transform.rotate(BoatImg, -90)
+
+#         #     x = 80 + margin + space_size + ship.col * (square_size + space_size)
+#         #     y = 20 + margin + space_size + ship.row * (square_size + space_size)
+
+#         # elif ship.direction == 'W':
+#         #     BoatImg = pygame.image.load("./assets/shipsImg/S1_" + str(ship.size) + ".png")
+#         #     BoatImg = pygame.transform.scale(BoatImg, (30, 100))
+#         #     BoatImg = pygame.transform.rotate(BoatImg, 90)
+
+#         #     x = 80 + margin + space_size + ship.col * (square_size + space_size)
+#         #     y = 20 + margin + space_size + ship.row * (square_size + space_size)
+
+#         # elif ship.direction == 'S':
+#         #     BoatImg = pygame.image.load("./assets/shipsImg/S1_" + str(ship.size) + ".png")
+#         #     BoatImg = pygame.transform.scale(BoatImg, (50, 100))
+#         #     BoatImg = pygame.transform.rotate(BoatImg, 180)
+
+#         #     x = 80 + margin + space_size + ship.col * (square_size + space_size)
+#         #     y = 20 + margin + space_size + ship.row * (square_size + space_size)
+
+#         # Draw the ship image on the window
+#             win.blit(BoatImg, (x, y))
+
+
+def drawShips(win, ships, square_size, margin, space_size):
+    # Parcourir chaque bateau dans la liste
+    for ship in ships:
+        if ship.direction == 'S':
+            BoatImg = pygame.image.load("./assets/shipsImg/S1_" + str(ship.size) + ".png")
+            BoatImg = pygame.transform.scale(BoatImg, (square_size, (square_size + space_size) * ship.size))
+            BoatImg = pygame.transform.rotate(BoatImg, 180)
+            # Calculer les coordonnées de dessin du bateau en fonction de sa position dans la matrice
+            x = 80 + margin + space_size + ship.col * (square_size + space_size)
+            y = 20 + margin + space_size + ship.row * (square_size + space_size)
+        elif ship.direction == 'E':
+            BoatImg = pygame.image.load("./assets/shipsImg/S1_" + str(ship.size) + ".png")
+            BoatImg = pygame.transform.scale(BoatImg, (square_size, (square_size + space_size) * ship.size))
+            BoatImg = pygame.transform.rotate(BoatImg, -90)
+            # Calculer les coordonnées de dessin du bateau en fonction de sa position dans la matrice
+            x = 80 + margin + space_size + ship.col * (square_size + space_size)
+            y = 20 + margin + space_size + ship.row * (square_size + space_size)
+        elif ship.direction == 'W':
+            BoatImg = pygame.image.load("./assets/shipsImg/S1_" + str(ship.size) + ".png")
+            BoatImg = pygame.transform.scale(BoatImg, (square_size, (square_size + space_size) * ship.size))
+            BoatImg = pygame.transform.rotate(BoatImg, 90)
+            # Calculer les coordonnées de dessin du bateau en fonction de sa position dans la matrice
+            x = 80 + margin + space_size + (ship.col + 1 - ship.size) * (square_size + space_size)
+            y = 20 + margin + space_size + ship.row * (square_size + space_size)
+        elif ship.direction == 'N':
+            BoatImg = pygame.image.load("./assets/shipsImg/S1_" + str(ship.size) + ".png")
+            BoatImg = pygame.transform.scale(BoatImg, (square_size, (square_size + space_size) * ship.size))
+            # Calculer les coordonnées de dessin du bateau en fonction de sa position dans la matrice
+            x = 80 + margin + space_size + ship.col * (square_size + space_size)
+            y = 20 + margin + space_size + (ship.row + 1 - ship.size) * (square_size + space_size)
+
+        # Dessiner le bateau à sa position calculée
+        win.blit(BoatImg, (x, y))
+
+
+
+            
 
 def drawMap(win, m1, size):
     MapZoneSize = 1020
@@ -33,8 +112,11 @@ def drawMap(win, m1, size):
                 pygame.draw.rect(win, (0, 71, 255), square_rect)
             elif cell_value == "B2":
                 pygame.draw.rect(win, (255, 97, 97), square_rect)
+            elif cell_value == "* ":
+                pygame.draw.rect(win, (12, 171, 232), square_rect)
             else:
                 pygame.draw.rect(win, (12, 171, 232), square_rect)
+                drawShips(win, m1.ships, square_size, margin, space_size)
 
 
 def chooseAction():

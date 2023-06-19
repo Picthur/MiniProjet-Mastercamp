@@ -45,52 +45,52 @@ def reconizeObject(coord):
 
 
     #FAIRE UNE FONCTION POUR RETROUVER UN BATEAU EN FONCTION DES COORDONNEES
-def Shoot(s: Ship, w: Weapon, way, m: map):
-        coordX = coordShooting(s)[0]
-        coordY = coordShooting(s)[1]
-        print(coordShooting(s)[0])
+# def Shoot(s: Ship, w: Weapon, way, m: map):
+#         coordX = coordShooting(s)[0]
+#         coordY = coordShooting(s)[1]
+#         print(coordShooting(s)[0])
 
-        match way:
-            case "N":
-                i = 0
-                for i in range(i,w.range):
-                    if(m.matrix[coordX - i][coordY] != "* "):
-                        if(reconizeObject(m.matrix[coordX - i][coordY]) != None):
-                            Attacked(reconizeObject(m.matrix[coordX - i][coordY]), w)
-                        print("TOUCHE!")
-                    else:
-                        print("RATE!")
-            case "E":
-                i = 0
-                for i in range(i,w.range):
-                    if(m.matrix[coordX][coordY + i] != "* "):
-                        if(reconizeObject(m.matrix[coordX][coordY + i]) != None):
-                            Attacked(reconizeObject(m.matrix[coordX][coordY + i]), w)
-                        print("TOUCHE!")
-                    else:
-                        print("RATE!")
-            case "S":
-                i = 0
-                for i in range(i,w.range):
-                    if(m.matrix[coordX + i][coordY] != "* "):
-                        if(reconizeObject(m.matrix[coordX + i][coordY]) != None):
-                            Attacked(reconizeObject(m.matrix[coordX + i][coordY]), w)
-                        print("TOUCHE!")
-                    else:
-                        print("RATE!")
-            case "O":
-                i = 0
-                for i in range(i,w.range):
-                    if(m.matrix[coordX][coordY - i] != "* "):
-                        if(reconizeObject(m.matrix[coordX][coordY - i]) != None):
-                            Attacked(reconizeObject(m.matrix[coordX][coordY - i]), w)
-                        print("TOUCHE!")
-                    else:
-                        print("RATE!")
+#         match way:
+#             case "N":
+#                 i = 0
+#                 for i in range(i,w.range):
+#                     if(m.matrix[coordX - i][coordY] != "* "):
+#                         if(reconizeObject(m.matrix[coordX - i][coordY]) != None):
+#                             Attacked(reconizeObject(m.matrix[coordX - i][coordY]), w)
+#                         print("TOUCHE!")
+#                     else:
+#                         print("RATE!")
+#             case "E":
+#                 i = 0
+#                 for i in range(i,w.range):
+#                     if(m.matrix[coordX][coordY + i] != "* "):
+#                         if(reconizeObject(m.matrix[coordX][coordY + i]) != None):
+#                             Attacked(reconizeObject(m.matrix[coordX][coordY + i]), w)
+#                         print("TOUCHE!")
+#                     else:
+#                         print("RATE!")
+#             case "S":
+#                 i = 0
+#                 for i in range(i,w.range):
+#                     if(m.matrix[coordX + i][coordY] != "* "):
+#                         if(reconizeObject(m.matrix[coordX + i][coordY]) != None):
+#                             Attacked(reconizeObject(m.matrix[coordX + i][coordY]), w)
+#                         print("TOUCHE!")
+#                     else:
+#                         print("RATE!")
+#             case "O":
+#                 i = 0
+#                 for i in range(i,w.range):
+#                     if(m.matrix[coordX][coordY - i] != "* "):
+#                         if(reconizeObject(m.matrix[coordX][coordY - i]) != None):
+#                             Attacked(reconizeObject(m.matrix[coordX][coordY - i]), w)
+#                         print("TOUCHE!")
+#                     else:
+#                         print("RATE!")
 
-m1 = Map(41)
+m1 = Map(31)
 m1.createMap()
 m1.initializeBase()
 m1.initializeShips()
-w1 = Weapon(2, 2, 3, 5)
-Shoot(find_ship_by_id(m1,2), w1, "N", m1)
+# w1 = Weapon(2, 2, 3, 5)
+# Shoot(find_ship_by_id(m1,2), w1, "N", m1)

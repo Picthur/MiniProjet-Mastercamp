@@ -14,6 +14,7 @@ class Map:
         self.size = size
         self.bases = []
         self.ships = []
+        self.map = []
 
     #Creation de la matrice correspondant à la carte
     def createMap(self):
@@ -75,10 +76,14 @@ class Map:
 
             #On les place
             placeShip(self.map, s2)
+        
+        print("####################\n")
+        for ship in self.ships:
+            print(ship.id, ship.size, ship.row, ship.col, ship.direction)
+            print()
+        
+        print("####################\n")
             
-
-
-
 
 
 
