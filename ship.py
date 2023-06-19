@@ -1,7 +1,6 @@
-
 class Ship():
     nb = 0
-    def __init__(self, size, row, col, direction, move,):
+    def __init__(self, size, row, col, direction, move):
         self.size = size        # Taille du bateau 
         self.row = row         # Position x du bateau
         self.col = col         # Position y du bateau
@@ -16,7 +15,7 @@ class Ship():
         return self.id
     
 
-    
+
 
 
     """ def Attacked(self, w:Weapon):
