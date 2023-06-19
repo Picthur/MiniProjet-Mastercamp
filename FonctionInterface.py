@@ -12,43 +12,6 @@ from game import *
 from player import *
 pygame.init()
 
-# def drawShips(win, ships, square_size, margin, space_size):
-#     for ship in ships:
-#         if ship.direction == 'N':
-#             BoatImg = pygame.image.load("./assets/shipsImg/S1_" + str(ship.size) + ".png")
-#             BoatImg = pygame.transform.scale(BoatImg, (40, (square_size + space_size)*ship.size))
-
-#             x = 80 + margin + ship.col * (square_size + space_size)
-#             y = 20 + margin + ship.row * (square_size + space_size)
-
-#             pygame.draw.rect(win, (0, 71, 255), (x, y, 4, 4))
-#         # elif ship.direction == 'E':
-#         #     BoatImg = pygame.image.load("./assets/shipsImg/S1_" + str(ship.size) + ".png")
-#         #     BoatImg = pygame.transform.scale(BoatImg, (50, 100))
-#         #     BoatImg = pygame.transform.rotate(BoatImg, -90)
-
-#         #     x = 80 + margin + space_size + ship.col * (square_size + space_size)
-#         #     y = 20 + margin + space_size + ship.row * (square_size + space_size)
-
-#         # elif ship.direction == 'W':
-#         #     BoatImg = pygame.image.load("./assets/shipsImg/S1_" + str(ship.size) + ".png")
-#         #     BoatImg = pygame.transform.scale(BoatImg, (30, 100))
-#         #     BoatImg = pygame.transform.rotate(BoatImg, 90)
-
-#         #     x = 80 + margin + space_size + ship.col * (square_size + space_size)
-#         #     y = 20 + margin + space_size + ship.row * (square_size + space_size)
-
-#         # elif ship.direction == 'S':
-#         #     BoatImg = pygame.image.load("./assets/shipsImg/S1_" + str(ship.size) + ".png")
-#         #     BoatImg = pygame.transform.scale(BoatImg, (50, 100))
-#         #     BoatImg = pygame.transform.rotate(BoatImg, 180)
-
-#         #     x = 80 + margin + space_size + ship.col * (square_size + space_size)
-#         #     y = 20 + margin + space_size + ship.row * (square_size + space_size)
-
-#         # Draw the ship image on the window
-#             win.blit(BoatImg, (x, y))
-
 
 def drawShips(win, ships, square_size, margin, space_size):
     # Parcourir chaque bateau dans la liste
@@ -83,9 +46,6 @@ def drawShips(win, ships, square_size, margin, space_size):
 
         # Dessiner le bateau à sa position calculée
         win.blit(BoatImg, (x, y))
-
-
-
             
 
 def drawMap(win, m1, size):
@@ -105,8 +65,8 @@ def drawMap(win, m1, size):
             square_rect = pygame.Rect(x, y, square_size, square_size)
 
             # Récupérer la valeur de la case dans la matrice map
-            cell_value = m1.map[row][col]
-            
+            cell_value = m1.matrix[row][col]
+
             # Dessiner le carré avec la couleur appropriée en fonction de la valeur de la case
             if cell_value == "B1":
                 pygame.draw.rect(win, (0, 71, 255), square_rect)
@@ -118,14 +78,17 @@ def drawMap(win, m1, size):
                 pygame.draw.rect(win, (12, 171, 232), square_rect)
                 drawShips(win, m1.ships, square_size, margin, space_size)
 
+# def moveShip(m):
 
-def chooseAction():
+
+def chooseAction(): 
     mouse = pygame.mouse.get_pos()
     click = pygame.mouse.get_pressed()
 
     #Bouton Déplacer
     if 1280 <= mouse[0] <= 1480 and 375 <= mouse[1] <= 445:
         if click[0] == 1:
+            #moveShip()
             print("Déplacer")
     #Bouton Tirer
     if 1570 <= mouse[0] <= 1770 and 375 <= mouse[1] <= 445:

@@ -38,7 +38,7 @@ def drawInfosZone():
     win.blit(PlayerText, (1230, 20+15+180+50))
     win.blit(PlayerName, (1370, 20+15+180+40))
 
-    chooseAction()
+    
     # Bouton Déplacer et Tirer (séparer les boutons de 80px et les centrer)
     DeplacerButton = pygame.image.load("./assets/DéplacerButton.png")
     DeplacerButton = pygame.transform.scale(DeplacerButton, (200, 70))
@@ -72,10 +72,9 @@ def drawInfosZone():
 
     TirerIcon = pygame.image.load("./assets/TirerIcon.png")
     TirerIcon = pygame.transform.scale(TirerIcon, (80, 80))
-    win.blit(TirerIcon, (1630, 675)) 
+    win.blit(TirerIcon, (1630, 675))
 
-
-
+    chooseAction()
 
 #Affichier les bateaux avec les images 
 def drawShips():
