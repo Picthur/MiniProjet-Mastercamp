@@ -2,7 +2,7 @@ from gameAction import *
 
 def play():
 
-    (map,p1,p2) = loadGame()
+    (map,p1,p2) = loadGame(31)
 
     gameContinue = True
     turn = 0

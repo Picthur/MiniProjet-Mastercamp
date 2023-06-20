@@ -70,9 +70,9 @@ def whoPlays(turn,p1,p2):
     else:
         return p2
     
-def loadGame():
+def loadGame(size):
 
-    map = Map(41)
+    map = Map(size)
     map.createMap()
     map.initializeBase()
     map.initializeShips()

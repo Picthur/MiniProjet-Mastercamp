@@ -4,4 +4,3 @@ class Weapon():
         self.damages = damages      # Les dégats de l'arme choisi
         self.range = range          # La porté de l'arme
         self.usage = usage          # Le nombre de fois qu'on peut l'utiliser
-

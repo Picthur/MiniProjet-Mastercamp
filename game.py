@@ -5,6 +5,7 @@ from ship import *
 from placement import * 
 from map import *
 from player import *
+from weapon import *
 import random
     # Fonction pour faire baisser les PV du bateau attaqué en fonction des degats de l'arme attaquante
     # Si le bateau a plus de PV, il est détruit et enlever des class Player

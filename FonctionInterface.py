@@ -10,6 +10,8 @@ from ship import *
 from placement import *
 from game import *
 from player import *
+from gameAction import *
+
 pygame.init()
 
 
@@ -69,28 +71,105 @@ def drawMap(win, m1, size):
 
             # Dessiner le carré avec la couleur appropriée en fonction de la valeur de la case
             if cell_value == "B1":
+                # rectancgle bkanc autour du carré pour le mettre en valeur
+                pygame.draw.rect(win, (242, 251, 255), (x-space_size, y-space_size, square_size+2*space_size, square_size+2*space_size))
                 pygame.draw.rect(win, (0, 71, 255), square_rect)
             elif cell_value == "B2":
+                pygame.draw.rect(win, (242, 251, 255), (x-space_size, y-space_size, square_size+2*space_size, square_size+2*space_size))
                 pygame.draw.rect(win, (255, 97, 97), square_rect)
             elif cell_value == "* ":
+                pygame.draw.rect(win, (242, 251, 255), (x-space_size, y-space_size, square_size+2*space_size, square_size+2*space_size))
                 pygame.draw.rect(win, (12, 171, 232), square_rect)
             else:
+                pygame.draw.rect(win, (242, 251, 255), (x-space_size, y-space_size, square_size+2*space_size, square_size+2*space_size))
                 pygame.draw.rect(win, (12, 171, 232), square_rect)
                 drawShips(win, m1.ships, square_size, margin, space_size)
 
-# def moveShip(m):
+def selectShip(win, player):
+    print("##########")
 
+    for ship in player.ships:
+        print("Bateau n°", ship.id, ":", ship.size, "cases, en", ship.direction, "à la position (", ship.row, ",", ship.col, ")")
 
-def chooseAction(): 
+    print("##########")
+
+def chooseAction(win, m, player):
+    # DeplacerButton = pygame.image.load("./assets/DéplacerButton.png")
+    # DeplacerButton = pygame.transform.scale(DeplacerButton, (200, 70))
+    # win.blit(DeplacerButton, (1280, 375))
+
+    # TirerButton = pygame.image.load("./assets/TirerButton.png")
+    # TirerButton = pygame.transform.scale(TirerButton, (200, 70))
+    # win.blit(TirerButton, (1570, 375))
+
+    AvancerIcon = pygame.image.load("./assets/AvancerIcon.png")
+    AvancerIcon = pygame.transform.scale(AvancerIcon, (80, 80))
+    win.blit(AvancerIcon, (1340, 475))
+
+    TournerIcon = pygame.image.load("./assets/TournerIcon.png")
+    TournerIcon = pygame.transform.scale(TournerIcon, (80, 80))
+    win.blit(TournerIcon, (1340, 575)) 
+
+    ReculerIcon = pygame.image.load("./assets/ReculerIcon.png")
+    ReculerIcon = pygame.transform.scale(ReculerIcon, (80, 80))
+    win.blit(ReculerIcon, (1340, 675))
+
     mouse = pygame.mouse.get_pos()
     click = pygame.mouse.get_pressed()
 
-    #Bouton Déplacer
-    if 1280 <= mouse[0] <= 1480 and 375 <= mouse[1] <= 445:
+    #Bouton Avancé
+    if 1340 <= mouse[0] <= 1420 and 475 <= mouse[1] <= 555:
         if click[0] == 1:
-            #moveShip()
-            print("Déplacer")
-    #Bouton Tirer
-    if 1570 <= mouse[0] <= 1770 and 375 <= mouse[1] <= 445:
+            print("Avancer")
+            #afficher un rectagle blanc pour cacher le playerPA
+            pygame.draw.rect(win, (242, 251, 255), (1445, 20+15+180+45+58, 25, 30))
+
+            if(not willCollideForward(player.ships[0],m)):
+                #Dans ce cas on avance
+                moveShipForward(player.ships[0],m)
+                #Coûte un point d'action
+                player.set_PA(player.PA - 1)
+            else:
+                print("Action impossible : collision")
+
+            pygame.display.update()  # Mettre à jour l'affichage après avoir cliqué sur le bouton
+
+    #Bouton Tourner
+    if 1340 <= mouse[0] <= 1420 and 575 <= mouse[1] <= 655:
         if click[0] == 1:
-            print("Tirer")
+            print("Tourner")
+            #afficher un rectagle blanc pour cacher le playerPA
+            pygame.draw.rect(win, (242, 251, 255), (1445, 20+15+180+45+58, 25, 30))
+            player.set_PA(player.PA - 1)
+
+            nextShipDirection = rotateShipLeft(player.ships[0])
+            
+            if(not willCollideRotation(player.ships[0],nextShipDirection,m)):
+
+                eraseShip(player.ships[0],m.matrix)
+
+                player.ships[0].direction = nextShipDirection
+                placeShip(player.ships[0],m.matrix)
+
+                player.set_PA(player.PA - 2)
+            else:
+                print("Collision détectée")
+
+            pygame.display.update()
+
+    #Bouton Reculer
+    if 1340 <= mouse[0] <= 1420 and 675 <= mouse[1] <= 755:
+        if click[0] == 1:
+            print("Reculer")
+            #afficher un rectagle blanc pour cacher le playerPA
+            pygame.draw.rect(win, (242, 251, 255), (1445, 20+15+180+45+58, 25, 30))
+
+            if(not willCollideBackward(player.ships[0],m)):
+                moveShipBackward(player.ships[0],m)
+                player.set_PA(player.PA - 1)
+            else:
+                print("Action impossible : collision")
+
+            pygame.display.update()
+
+
