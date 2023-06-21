@@ -1,3 +1,4 @@
+from weapon import *
 
 class Ship():
     nb = 0
@@ -16,14 +17,7 @@ class Ship():
         return self.id
     
 
-
-
-
-    """ def Attacked(self, w:Weapon):
+    def Attacked(self, w:Weapon):
         self.health -= w.damages
         if(self.health <= 0):
             del self
-
-    def Coordonne(self):
-        coord = []
-    #def movement() """

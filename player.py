@@ -1,12 +1,8 @@
-import pygame
-
 from base import *
 from ship import *
 from placement import * 
 from map import *
-import random
-
-pygame.init()
+from weapon import *
 
 #Class Weapon : les différentes armes possédé par un joueur
 class Weapon():
@@ -47,6 +43,9 @@ class Player():
         self.base = []          # La base du joueur
         Player.id += 1          # ID du joueur, inique
 
+    def get_id(self):
+        return self.id
+    
     # Ajoute une arme a un joueur, si elle n'existe pas encore
     def addWeapon(self, w: Weapon): 
         if w not in self.weapon:
