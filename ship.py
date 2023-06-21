@@ -21,6 +21,8 @@ class Ship():
 
     
 
+    
+
 
     """ def Attacked(self, w:Weapon):
         self.health -= w.damages

@@ -6,8 +6,8 @@ import random
 
 class Map: 
     #Definition de la taille des bases
-    BASE_HEIGHT = 5 
-    BASE_LENGTH = 4
+    BASE_HEIGHT = 7 
+    BASE_LENGTH = 6
 
     #Definition de la taille de la carte
     def __init__(self, size):
