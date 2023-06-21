@@ -14,6 +14,34 @@ win.fill((242, 251, 255))
 def drawMapZone():
     pygame.draw.rect(win, (0, 0, 0), (80, 20, 1020, 1020), 5, border_radius=10)
 
+def drawShips(player):
+    #Affichier les bateaux du joueur alignés l'ordre de taille
+
+    if player.name == "Lucas": #TODO: changer la couleur en fonction de l'ID du joueur
+        boatName = "S1_"
+    else:
+        boatName = "S2_"
+
+    for ship in player.ships:
+        BoatImg_5 = pygame.image.load("./assets/shipsImg/" + boatName + "5.png")
+        BoatImg_5 = pygame.transform.scale(BoatImg_5, (40, 200))
+
+        BoatImg_4 = pygame.image.load("./assets/shipsImg/" + boatName + "4.png")
+        BoatImg_4 = pygame.transform.scale(BoatImg_4, (40, 160))
+
+        BoatImg_3 = pygame.image.load("./assets/shipsImg/" + boatName + "3.png")
+        BoatImg_3 = pygame.transform.scale(BoatImg_3, (40, 120))
+
+        BoatImg_2 = pygame.image.load("./assets/shipsImg/" + boatName + "2.png")
+        BoatImg_2 = pygame.transform.scale(BoatImg_2, (40, 80))
+
+        x = 1400
+        y = 400
+        win.blit(BoatImg_5, (x, y))
+        win.blit(BoatImg_4, (x + 60, y + 200 - 160))
+        win.blit(BoatImg_3, (x + 60 + 60, y + 200 - 120))
+        win.blit(BoatImg_2, (x + 60 + 60 + 60, y + 200 - 80))
+
 
 def drawInfosZone(player):
     pygame.draw.rect(win, (0, 0, 0), (1180, 20, 700, 1020), 5, border_radius=10)
@@ -42,16 +70,9 @@ def drawInfosZone(player):
     win.blit(PlayerName, (1230 + 150, 20 + 15 + 180 + 45))
     
     PlayerPA = pygame.transform.scale(PlayerPA, (25, 30))
-    win.blit(PlayerPA, (1445, 20 + 15 + 180 + 45 + 58))
+    win.blit(PlayerPA, (1445, 20 + 15 + 180 + 45 + 58))  
 
-
-def drawShips():
-    #Affichier les bateaux du joueur dans l'ordre de taille
-
-    #Afficher les bateaux du joueur 1
-    for ship in p1.ships:
-        ShipImg = pygame.image.load("./assets/ShipH.png")
-        ShipImg = pygame.transform.scale(ShipImg, (ship.size * 40, 40))
+    drawShips(player)     
 
 def drawWeapon():
     Weapon1Icon = pygame.image.load("./assets/Weapon1.png")
