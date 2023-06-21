@@ -17,7 +17,4 @@ class Ship():
         return self.id
     
 
-    def Attacked(self, w:Weapon):
-        self.health -= w.damages
-        if(self.health <= 0):
-            del self
+    
