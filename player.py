@@ -60,6 +60,9 @@ class Player():
     def addBase(self, b:Base):
         if self.base == []:
             self.base = b
+    
+    def removeShip(self, s: Ship):
+        self.ship.remove(s)
 
 
 

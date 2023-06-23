@@ -1,6 +1,7 @@
 from base import *
 from ship import *
 from placement import * 
+from player import *
 import random
 
 
@@ -75,6 +76,7 @@ class Map:
 
             #On les place
             placeShip(s2, self.matrix)
+            
             
 
 

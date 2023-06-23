@@ -26,7 +26,7 @@ def drawMap(win, m1, size):
             square_rect = pygame.Rect(x, y, square_size, square_size)
 
             # Récupérer la valeur de la case dans la matrice map
-            cell_value = m1.map[row][col]
+            cell_value = m1.matrix[row][col]
             
             # Dessiner le carré avec la couleur appropriée en fonction de la valeur de la case
             if cell_value == "B1":

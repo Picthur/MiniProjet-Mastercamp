@@ -6,17 +6,25 @@ from base import *
 from ship import *
 
 import random
+
+
+def findPlayer(s: Ship, p1: Player, p2: Player):
+    if(s.id >= 4):
+        return p2
+    else:
+        return p1
+
     # Fonction pour faire baisser les PV du bateau attaqué en fonction des degats de l'arme attaquante
     # Si le bateau a plus de PV, il est détruit et enlever des class Player
-def Attacked(s: Ship, w:Weapon, m: list[Ship]):
+def Attacked(s: Ship, w:Weapon, m: list[Ship], p1: Player, p2: Player):
     print(s.health)
     s.health -= w.damages
     print(s.health)
     if(s.health <= 0):
-        #m.matrix[s.row][s.col] = "* "
-        m.remove(s)
-        Ship.nb -= 1
-        del s
+        p = findPlayer(s, p1, p2)
+        eraseShip(s, m)
+        p.removeShip(s)
+
 
 def coordShooting(s: Ship):
         coordX = 0
@@ -51,7 +59,7 @@ def reconizeObject(m: map,coordX: int, coordY: int):
 
 
     #FAIRE UNE FONCTION POUR RETROUVER UN BATEAU EN FONCTION DES COORDONNEES
-def Shoot(s: Ship, w: Weapon, way, m: Map):
+def Shoot(s: Ship, w: Weapon, way, m: Map, p1: Player, p2: Player):
         
         #Coordonnée du front du bateau
         coordX = coordShooting(s)[0]
@@ -65,7 +73,7 @@ def Shoot(s: Ship, w: Weapon, way, m: Map):
                             ship = reconizeObject(m,coordX - (i+1), coordY)
                             if(ship != None):
                                 print("TOUCHE!")
-                                Attacked(ship, w, m.ships)
+                                Attacked(ship, w, m.ships, p1, p2)
                                 m1.displayMap()
                                 break
                         else:
@@ -80,8 +88,8 @@ def Shoot(s: Ship, w: Weapon, way, m: Map):
                         if(m.matrix[coordX][coordY + (i+1)] != "* "):
                             ship = reconizeObject(m, coordX, coordY + (i+1))
                             if(ship != None):
-                                print(f"TOUCHE! {s.id}")
-                                Attacked(ship, w, m.matrix)
+                                print(f"TOUCHE! par le bateau n°{s.id}")
+                                Attacked(ship, w, m.ships, p1, p2)
                                 m1.displayMap()
                                 break
                         else:
@@ -96,7 +104,7 @@ def Shoot(s: Ship, w: Weapon, way, m: Map):
                             ship = reconizeObject(m, coordX + (i+1), coordY)
                             if(ship != None):
                                 print(f"TOUCHE! {s.id}")
-                                Attacked(ship, w, m.matrix)
+                                Attacked(ship, w, m.ships, p1, p2)
                                 m1.displayMap()
                                 break
                         else:
@@ -110,7 +118,7 @@ def Shoot(s: Ship, w: Weapon, way, m: Map):
                             ship = reconizeObject(m, coordX, coordY - (i+1))
                             if(ship != None):
                                 print(f"TOUCHE! {s.id}")
-                                Attacked(ship, w, m.matrix)
+                                Attacked(ship, w, m.ships, p1, p2)
                                 m1.displayMap()
                                 break
                         else:
@@ -121,12 +129,14 @@ def Shoot(s: Ship, w: Weapon, way, m: Map):
 m1 = Map(20)
 m1.createMap()
 w1 = Weapon(10, 10, 20)
+p1 = Player("Leo")
+p2 = Player("Tom")
 m1.initializeShips()
 for element in m1.ships:
     print(element.id)
 m1.displayMap()
 
-Shoot(find_ship_by_id(m1,0), w1, "E", m1)
+Shoot(find_ship_by_id(m1,0), w1, "E", m1, p1, p2)
 #m1.displayMap()
 s1 = Ship
 s1 = find_ship_by_id(m1,0)
