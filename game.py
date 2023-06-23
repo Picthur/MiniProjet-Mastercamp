@@ -4,8 +4,12 @@ from map import *
 from player import *
 from base import *
 from ship import *
+from gameAction import *
 
 import random
+
+#def supprShip(s: Ship, m: Map):
+
 
 
 def findPlayer(s: Ship, p1: Player, p2: Player):
@@ -16,14 +20,15 @@ def findPlayer(s: Ship, p1: Player, p2: Player):
 
     # Fonction pour faire baisser les PV du bateau attaqué en fonction des degats de l'arme attaquante
     # Si le bateau a plus de PV, il est détruit et enlever des class Player
-def Attacked(s: Ship, w:Weapon, m: list[Ship], p1: Player, p2: Player):
+def Attacked(s: Ship, w:Weapon, m: Map, p1: Player, p2: Player):
     print(s.health)
     s.health -= w.damages
     print(s.health)
     if(s.health <= 0):
         p = findPlayer(s, p1, p2)
-        eraseShip(s, m)
         p.removeShip(s)
+        m.removeShipMap(s)
+        
 
 
 def coordShooting(s: Ship):
@@ -92,8 +97,8 @@ def Shoot(s: Ship, w: Weapon, way, m: Map, p1: Player, p2: Player):
                                 Attacked(ship, w, m.ships, p1, p2)
                                 m1.displayMap()
                                 break
-                        else:
-                            print("RATE!")
+                        #else:
+                            #print("RATE!")
                     else:
                         print("fin du tir")
                         break
@@ -132,17 +137,13 @@ w1 = Weapon(10, 10, 20)
 p1 = Player("Leo")
 p2 = Player("Tom")
 m1.initializeShips()
-for element in m1.ships:
-    print(element.id)
+m1.initializeBase()
+initializePlayer(m1, p1, p2)
 m1.displayMap()
-
 Shoot(find_ship_by_id(m1,0), w1, "E", m1, p1, p2)
-#m1.displayMap()
+m1.displayMap()
 s1 = Ship
 s1 = find_ship_by_id(m1,0)
-
-for element in m1.ships:
-    print(element.id)
 #print(s1.row)
 #print(s1.col)
 #print(coordShooting(s1)[0])

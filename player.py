@@ -4,33 +4,6 @@ from placement import *
 from map import *
 from weapon import *
 
-#Class Weapon : les différentes armes possédé par un joueur
-class Weapon():
-    def __init__(self, damages, usage, range):
-        self.damages = damages      # Les dégats de l'arme choisi
-        self.range = range          # La porté de l'arme
-        self.usage = usage          # Le nombre de fois qu'on peut l'utiliser
-
-
-# Class Bateau : les différents bateaux possédé par un joueur
-class Ship():
-    nb = 0
-    def __init__(self, size, row, col, direction, move,):
-        self.size = size        # Taille du bateau 
-        self.row = row         # Position x du bateau
-        self.col = col         # Position y du bateau
-        self.direction = direction          # Orientation du Bateau (N S O E)
-        self.health = size      # PV Actuelle du bateau (basé initialement sur la taille du bateau)
-        self.maxhealth = size   # PV Maximal/Initial du bateau 
-        self.move = move        # Combien 
-        Ship.nb += 1            # On incrémente le nombre de bateaux
-        self.id = Ship.nb       # Id correspond au ieme bateau créé
-
-    def get_id(self):
-        return self.id
-
-
-
 # Class joueur: 
 class Player():
     id = 0
@@ -64,7 +37,5 @@ class Player():
     def removeShip(self, s: Ship):
         self.ship.remove(s)
 
-
-
-
-
+    def set_PA (self,x):
+        self.PA = x

@@ -76,6 +76,9 @@ class Map:
 
             #On les place
             placeShip(s2, self.matrix)
+
+    def removeShipMap(self, s: Ship):
+        self.ships.remove(s)
             
             
 
