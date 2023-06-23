@@ -89,108 +89,139 @@ def drawMap(win, m1, size, p1, p2):
                 drawShips(win, square_size, margin, space_size, p1)
                 drawShips(win, square_size, margin, space_size, p2)
 
-def selectShip(win, player):
-    print("##########")
+def selectShipClick(win, player, mouse, click):
+    # mouse = pygame.mouse.get_pos()
+    # click = pygame.mouse.get_pressed()
 
-    for ship in player.ships:
-        print("Bateau n°", ship.id, ":", ship.size, "cases, en", ship.direction, "à la position (", ship.row, ",", ship.col, ")")
+    if click[0] == 1:
+        #Bouton 5
+        if 1400 <= mouse[0] <= 1440 and 400 <= mouse[1] <= 600:
+            #retourner le bateau dont la taille est 5
+            print("Bateau de taille 5 sélectionné")
+            return player.ships[0]
+            
+        #Bouton 4
+        if 1460 <= mouse[0] <= 1500 and 440 <= mouse[1] <= 600:
+            #retourner le bateau dont la taille est 4
+            print("Bateau de taille 4 sélectionné")
+            return player.ships[1]
+            
+        #Bouton 3
+        if 1520 <= mouse[0] <= 1560 and 460 <= mouse[1] <= 600:
+            #retourner le bateau dont la taille est 3
+            print("Bateau de taille 3 sélectionné")
+            return player.ships[2]
+            
+        #Bouton 2
+        if 1580 <= mouse[0] <= 1620 and 520 <= mouse[1] <= 600:
+            #retourner le bateau dont la taille est 2
+            print("Bateau de taille 2 sélectionné")
+            return player.ships[3]
+        
 
-    print("##########")
-
-def chooseAction(win, m, player):
-    AvancerIcon = pygame.image.load("./assets/AvancerIcon.png")
-    AvancerIcon = pygame.transform.scale(AvancerIcon, (80, 80))
-    win.blit(AvancerIcon, (1340, 675))
-
-    TournerGaucheIcon = pygame.image.load("./assets/TournerGaucheIcon.png")
-    TournerGaucheIcon = pygame.transform.scale(TournerGaucheIcon, (80, 80))
-    win.blit(TournerGaucheIcon, (1290, 775))
-
-    TournerDroiteIcon = pygame.image.load("./assets/TournerDroiteIcon.png")
-    TournerDroiteIcon = pygame.transform.scale(TournerDroiteIcon, (80, 80))
-    win.blit(TournerDroiteIcon, (1390, 775))
-
-    ReculerIcon = pygame.image.load("./assets/ReculerIcon.png")
-    ReculerIcon = pygame.transform.scale(ReculerIcon, (80, 80))
-    win.blit(ReculerIcon, (1340, 875))
-
+def chooseActions(win, m, player, selectedShip):
     mouse = pygame.mouse.get_pos()
     click = pygame.mouse.get_pressed()
+    
+    print("##### 1. Bateau sélectionné : " + str(selectedShip) + "\n")
 
     #Bouton Avancé
     if 1340 <= mouse[0] <= 1420 and 675 <= mouse[1] <= 755:
         if click[0] == 1:
             print("Avancer")
+            print("2. Bateau sélectionné : " + str(selectedShip) + "\n")
+
+            if selectedShip is not None:
+                print("Avancer")
+                print("Avancer")
             
-            #afficher un rectagle blanc pour cacher le playerPA
-            pygame.draw.rect(win, (242, 251, 255), (1445, 20+15+180+45+58, 25, 30))
+                #afficher un rectagle blanc pour cacher le playerPA
+                pygame.draw.rect(win, (242, 251, 255), (1445, 20+15+180+45+58, 25, 30))
 
-            if(not willCollideForward(player.ships[0],m)):
-                #Dans ce cas on avance
-                moveShipForward(player.ships[0],m)
-                #Coûte un point d'action
-                player.set_PA(player.PA - 2)
+                if(not willCollideForward(selectedShip,m)):
+                    #Dans ce cas on avance
+                    moveShipForward(selectedShip,m)
+                    #Coûte un point d'action
+                    player.set_PA(player.PA - 2)
+                else:
+                    print("Action impossible : collision")
+
+                pygame.display.update()  # Mettre à jour l'affichage après avoir cliqué sur le bouton
+                selectedShip = None
             else:
-                print("Action impossible : collision")
-
-            pygame.display.update()  # Mettre à jour l'affichage après avoir cliqué sur le bouton
+                print("Aucun bateau sélectionné pour avancer")
 
     #Bouton Tourner gauche
-    if 1290 <= mouse[0] <= 1370 and 775 <= mouse[1] <= 755:
+    if 1290 <= mouse[0] <= 1370 and 775 <= mouse[1] <= 855:
         if click[0] == 1:
             print("Tourner gauche")
-            #afficher un rectagle blanc pour cacher le playerPA
-            pygame.draw.rect(win, (242, 251, 255), (1445, 20+15+180+45+58, 25, 30))
+            if selectedShip is not None:
+                #afficher un rectagle blanc pour cacher le playerPA
+                pygame.draw.rect(win, (242, 251, 255), (1445, 20+15+180+45+58, 25, 30))
 
-            nextShipDirection = rotateShipLeft(player.ships[0])
-            
-            if(not willCollideRotation(player.ships[0],nextShipDirection,m)):
-                eraseShip(player.ships[0],m.matrix)
+                nextShipDirection = rotateShipLeft(selectedShip)
+                
+                if(not willCollideRotation(selectedShip,nextShipDirection,m)):
+                    eraseShip(selectedShip,m.matrix)
 
-                player.ships[0].direction = nextShipDirection
-                placeShip(player.ships[0],m.matrix)
+                    selectedShip.direction = nextShipDirection
+                    placeShip(selectedShip,m.matrix)
 
-                player.set_PA(player.PA - 1)
+                    player.set_PA(player.PA - 1)
+                else:
+                    print("Collision détectée")
+
+                pygame.display.update()
+                selectedShip = None
             else:
-                print("Collision détectée")
-
-            pygame.display.update()
+                print("Aucun bateau sélectionné pour tourner")
 
     #Bouton Tourner droite
-    if 1390 <= mouse[0] <= 1470 and 775 <= mouse[1] <= 755:
+    if 1390 <= mouse[0] <= 1470 and 775 <= mouse[1] <= 855:
         if click[0] == 1:
             print("Tourner droite")
-            #afficher un rectagle blanc pour cacher le playerPA
-            pygame.draw.rect(win, (242, 251, 255), (1445, 20+15+180+45+58, 25, 30))
 
-            nextShipDirection = rotateShipRight(player.ships[0])
-            
-            if(not willCollideRotation(player.ships[0],nextShipDirection,m)):
-                eraseShip(player.ships[0],m.matrix)
+            if selectedShip is not None:
+                #afficher un rectagle blanc pour cacher le playerPA
+                pygame.draw.rect(win, (242, 251, 255), (1445, 20+15+180+45+58, 25, 30))
 
-                player.ships[0].direction = nextShipDirection
-                placeShip(player.ships[0],m.matrix)
+                nextShipDirection = rotateShipRight(selectedShip)
+                
+                if(not willCollideRotation(selectedShip,nextShipDirection,m)):
+                    eraseShip(selectedShip,m.matrix)
 
-                player.set_PA(player.PA - 1)
+                    selectedShip.direction = nextShipDirection
+                    placeShip(selectedShip,m.matrix)
+
+                    player.set_PA(player.PA - 1)
+                else:
+                    print("Collision détectée")
+
+                pygame.display.update()
+                selectedShip = None
             else:
-                print("Collision détectée")
-
-            pygame.display.update()
+                print("Aucun bateau sélectionné pour tourner")
 
 
     #Bouton Reculer
     if 1340 <= mouse[0] <= 1420 and 875 <= mouse[1] <= 955:
         if click[0] == 1:
             print("Reculer")
-            #afficher un rectagle blanc pour cacher le playerPA
-            pygame.draw.rect(win, (242, 251, 255), (1445, 20+15+180+45+58, 25, 30))
 
-            if(not willCollideBackward(player.ships[0],m)):
-                moveShipBackward(player.ships[0],m)
-                player.set_PA(player.PA - 2)
+            if selectedShip is not None:
+                #afficher un rectagle blanc pour cacher le playerPA
+                pygame.draw.rect(win, (242, 251, 255), (1445, 20+15+180+45+58, 25, 30))
+
+                if(not willCollideBackward(selectedShip,m)):
+                    moveShipBackward(selectedShip,m)
+                    player.set_PA(player.PA - 2)
+                else:
+                    print("Action impossible : collision")
+
+                pygame.display.update()
+                selectedShip = None
             else:
-                print("Action impossible : collision")
-
-            pygame.display.update()
+                print("Aucun bateau sélectionné pour reculer")
+    
     
 

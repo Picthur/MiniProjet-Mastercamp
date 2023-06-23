@@ -43,6 +43,24 @@ def drawShips(player):
         win.blit(BoatImg_2, (x + 60 + 60 + 60, y + 200 - 80))
 
 
+def drawMoveButton():
+    AvancerIcon = pygame.image.load("./assets/AvancerIcon.png")
+    AvancerIcon = pygame.transform.scale(AvancerIcon, (80, 80))
+    win.blit(AvancerIcon, (1340, 675))
+
+    TournerGaucheIcon = pygame.image.load("./assets/TournerGaucheIcon.png")
+    TournerGaucheIcon = pygame.transform.scale(TournerGaucheIcon, (80, 80))
+    win.blit(TournerGaucheIcon, (1290, 775))
+
+    TournerDroiteIcon = pygame.image.load("./assets/TournerDroiteIcon.png")
+    TournerDroiteIcon = pygame.transform.scale(TournerDroiteIcon, (80, 80))
+    win.blit(TournerDroiteIcon, (1390, 775))
+
+    ReculerIcon = pygame.image.load("./assets/ReculerIcon.png")
+    ReculerIcon = pygame.transform.scale(ReculerIcon, (80, 80))
+    win.blit(ReculerIcon, (1340, 875))
+
+
 def drawInfosZone(player):
     pygame.draw.rect(win, (0, 0, 0), (1180, 20, 700, 1020), 5, border_radius=10)
 
@@ -72,7 +90,9 @@ def drawInfosZone(player):
     PlayerPA = pygame.transform.scale(PlayerPA, (25, 30))
     win.blit(PlayerPA, (1445, 20 + 15 + 180 + 45 + 58))  
 
-    drawShips(player)     
+    drawShips(player)  
+    drawMoveButton()   
+
 
 def drawWeapon():
     Weapon1Icon = pygame.image.load("./assets/Weapon1.png")
@@ -95,7 +115,7 @@ def drawAll(player):
     drawWeapon()
 
 
-size = 41
+size = 21
 m, p1, p2 = loadGame(size)
 m.displayMap()
 
@@ -109,9 +129,15 @@ while running:
             if event.key == pygame.K_ESCAPE:
                 running = False
 
-    
     drawAll(player)
-    action = chooseAction(win, m, player)
+    
+    mouse = pygame.mouse.get_pos()
+    click = pygame.mouse.get_pressed()
+    selected_ship = selectShipClick(win, player, mouse, click)
+
+    # Choix de l'action
+    selected_ship = chooseActions(win, m, player, selected_ship)
+
 
     pygame.display.update()
 
@@ -119,6 +145,9 @@ while running:
         turn += 1
         player = whoPlays(turn, p1, p2)
         player.PA = 5
+        selectedShip = None  # Réinitialiser la valeur de selectedShip à chaque tour de boucle
+
+    selectedShip = None  # Réinitialiser la valeur de selectedShip à chaque tour de boucle
 
 pygame.quit()
 
