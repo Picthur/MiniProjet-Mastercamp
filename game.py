@@ -8,13 +8,14 @@ from ship import *
 import random
     # Fonction pour faire baisser les PV du bateau attaqué en fonction des degats de l'arme attaquante
     # Si le bateau a plus de PV, il est détruit et enlever des class Player
-def Attacked(s: Ship, w:Weapon, m: Map):
+def Attacked(s: Ship, w:Weapon, m: list[Ship]):
     print(s.health)
     s.health -= w.damages
     print(s.health)
     if(s.health <= 0):
-        print("je suis delete")
-        eraseShip(s,m)
+        #m.matrix[s.row][s.col] = "* "
+        m.remove(s)
+        Ship.nb -= 1
         del s
 
 def coordShooting(s: Ship):
@@ -56,62 +57,82 @@ def Shoot(s: Ship, w: Weapon, way, m: Map):
         coordX = coordShooting(s)[0]
         coordY = coordShooting(s)[1]
 
-
-        #Match pour trouver la direction du tir
-        done = False
-
         match way:
             case "N":
-                for i in range(w.range+1) or not done:
-                    if(m.matrix[coordX - (i+1)][coordY] != "* "):
-                        if(reconizeObject(m,coordX - (i+1), coordY) == Ship):
-                            print("TOUCHE!")
-                            #Attacked(reconizeObject(m, coordX - i,coordY), w)
-                            done = True
+                for i in range(w.range+1):
+                    if(coordX - i >= 0):
+                        if(m.matrix[coordX - (i+1)][coordY] != "* "):
+                            ship = reconizeObject(m,coordX - (i+1), coordY)
+                            if(ship != None):
+                                print("TOUCHE!")
+                                Attacked(ship, w, m.ships)
+                                m1.displayMap()
+                                break
+                        else:
+                            print("RATE!")
                     else:
-                        print("RATE!")
+                        print("fin du tir")
+                        break
                     
             case "E":
-         
                 for i in range(w.range+1):
-                    if(m.matrix[coordX][coordY + (i+1)] != "* "):
-                        ship = reconizeObject(m, coordX, coordY + (i+1))
-                        if(ship != None):
-                            print("TOUCHE!")
-                            Attacked(ship, w, m.matrix)
-                            m1.displayMap()
-                            break
+                    if(coordY + i+1 <= m.size-1):
+                        if(m.matrix[coordX][coordY + (i+1)] != "* "):
+                            ship = reconizeObject(m, coordX, coordY + (i+1))
+                            if(ship != None):
+                                print(f"TOUCHE! {s.id}")
+                                Attacked(ship, w, m.matrix)
+                                m1.displayMap()
+                                break
+                        else:
+                            print("RATE!")
                     else:
-                        print("RATE!")
+                        print("fin du tir")
+                        break
             case "S":
-                for i in range(w.range+1) or not done:
-                    if(m.matrix[coordX + i][coordY] != "* "):
-                        ship = reconizeObject(m, coordX + (i+1), coordY)
-                        if(ship != None):
-                            print("TOUCHE!")
-                            Attacked(ship, w)
-                            done = True
+                for i in range(w.range+1):
+                    if(coordX + i+1 <= m.size-1):
+                        if(m.matrix[coordX + (i+1)][coordY] != "* "):
+                            ship = reconizeObject(m, coordX + (i+1), coordY)
+                            if(ship != None):
+                                print(f"TOUCHE! {s.id}")
+                                Attacked(ship, w, m.matrix)
+                                m1.displayMap()
+                                break
+                        else:
+                            print("RATE!")
                     else:
-                        print("RATE!")
+                        break
             case "O":
-                for i in range(w.range+1) or not done:
-                    if(m.matrix[coordX][coordY - i] != "* "):
-                        if(reconizeObject(m, coordX, coordY - (i+1)) != None):
-                            print("TOUCHE!")
-                            #Attacked(reconizeObject(m, coordX, coordY - i), w)
-                            done = True
+                for i in range(w.range+1):
+                    if(coordY - i >= 0):
+                        if(m.matrix[coordX][coordY - (i+1)] != "* "):
+                            ship = reconizeObject(m, coordX, coordY - (i+1))
+                            if(ship != None):
+                                print(f"TOUCHE! {s.id}")
+                                Attacked(ship, w, m.matrix)
+                                m1.displayMap()
+                                break
+                        else:
+                            print("RATE!")
                     else:
-                        print("RATE!")
+                        break
 
 m1 = Map(20)
 m1.createMap()
-w1 = Weapon(10, 10, 10)
+w1 = Weapon(10, 10, 20)
 m1.initializeShips()
+for element in m1.ships:
+    print(element.id)
 m1.displayMap()
+
 Shoot(find_ship_by_id(m1,0), w1, "E", m1)
 #m1.displayMap()
 s1 = Ship
 s1 = find_ship_by_id(m1,0)
+
+for element in m1.ships:
+    print(element.id)
 #print(s1.row)
 #print(s1.col)
 #print(coordShooting(s1)[0])
