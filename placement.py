@@ -18,36 +18,36 @@ def placeShip(ship,matrix):
 def placeShipEast(ship,matrix):
     for i in range(ship.size):
         if(i == 0):
-            matrix[ship.row][ship.col + i] = "b" + str(ship.id)
+            matrix[ship.row][ship.col + i] = str(ship.id) + "b"
         elif (i == ship.size - 1):
-            matrix[ship.row][ship.col + i] = "f" + str(ship.id)
+            matrix[ship.row][ship.col + i] = str(ship.id) + "f"
         else:
             matrix[ship.row][ship.col + i] = str(ship.id) + " "
 
 def placeShipNorth(ship,matrix):
     for i in range(ship.size):
         if(i == 0):
-            matrix[ship.row - i][ship.col] = "b" + str(ship.id)
+            matrix[ship.row - i][ship.col] = str(ship.id) + "b"
         elif (i == ship.size - 1):
-            matrix[ship.row - i][ship.col] = "f" + str(ship.id)
+            matrix[ship.row - i][ship.col] = str(ship.id) + "f"
         else:
             matrix[ship.row - i][ship.col] = str(ship.id) + " "
 
 def placeShipSouth(ship,matrix):
     for i in range(ship.size):
         if(i == 0):
-            matrix[ship.row + i][ship.col] = "b" + str(ship.id)
+            matrix[ship.row + i][ship.col] = str(ship.id) + "b"
         elif (i == ship.size - 1):
-            matrix[ship.row + i][ship.col] = "f" + str(ship.id)
+            matrix[ship.row + i][ship.col] = str(ship.id) + "f" 
         else:
             matrix[ship.row + i][ship.col] = str(ship.id) + " "
 
 def placeShipWest(ship,matrix):
     for i in range(ship.size):
         if(i == 0):
-            matrix[ship.row][ship.col - i] = "b" + str(ship.id)
+            matrix[ship.row][ship.col - i] = str(ship.id) + "b"
         elif (i == ship.size - 1):
-            matrix[ship.row][ship.col - i] = "f" + str(ship.id)
+            matrix[ship.row][ship.col - i] = str(ship.id) + "f"
         else:
             matrix[ship.row][ship.col - i] = str(ship.id) + " "
 
