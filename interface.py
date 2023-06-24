@@ -19,13 +19,16 @@ def playerName(i):
     # Couleurs utilisées
     BLACK = (0, 0, 0)
 
-    win.fill((242, 251, 255))
+    bgImg = pygame.image.load("./assets/bgImg.jpg")
+    bgImg = pygame.transform.scale(bgImg, (1920, 1080))
+    win.blit(bgImg, (0, 0))
+    
     logo = pygame.image.load("./assets/TitleGame.png")
-    logo = pygame.transform.scale(logo, (600, 180))
-    win.blit(logo, (660, 20))
+    logo = pygame.transform.scale(logo, (700, 200))
+    win.blit(logo, (600, 100))
     
     # Police utilisée pour les textes
-    font = pygame.font.Font(None, 32)
+    font = pygame.font.Font(None, 42)
 
     # Variables pour stocker les noms entrés par le joueur
     name1 = ""
@@ -52,17 +55,15 @@ def playerName(i):
                     name1 += event.unicode
                 
         # Textes et zones de saisie pour les noms
-        x = 600
-        y = 300
+        x = 700
+        y = 500
         message = f"Enter Player {i} Name:"
         text1 = font.render(message, True, BLACK)
         win.blit(text1, (x, y))
 
-        # Zone de saisie pour le nom du joueur 1
-        
-        rect1 = pygame.Rect(x + 250, y-5, 140, 32)
-        pygame.draw.rect(win, BLACK, rect1, 2)
-        pygame.draw.rect(win, BLACK, rect1, 1)
+        # Zone de saisie pour le nom du joueur
+        rect1 = pygame.Rect(x + 300, y-2, 140, 32)
+        pygame.draw.rect(win, BLACK, rect1, 2, border_radius=5)
         text_surface1 = font.render(name1, True, (0, 0, 0))
         win.blit(text_surface1, (rect1.x + 5, rect1.y + 5))
 
@@ -331,4 +332,4 @@ pygame.quit()
 #TODO:
 # - Ajouter la possibilté de tirer
 #     --> mettre des infos sur les armes (nom, range, degats, etc...    )
-# - faire une page plus jolie pour le choix des noms
+# - page de victoire
