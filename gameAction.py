@@ -99,7 +99,6 @@ def selectAction(map, player, player2):
                 s = selectShip(map, player)
                 way = selectWay()
                 Shoot(s, w, way, map, player, player2)
-                player.set_PA(player.PA - 2)
                 if(checkWinByOponentShip(map, player)):
                     return "victoire"
                 player.set_PA(player.PA - 2)

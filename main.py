@@ -20,7 +20,11 @@ def play():
         while(player.PA > 0):
             map.displayMap()
             print("PA disponibles {}".format(player.PA))
-            selectAction(map, player, player2)    
+            if selectAction(map, player, player2) == "victoire":
+                map.displayMap()
+                gameContinue = False
+                print("Fin de partie, victoire de " + player.name)
+                break     
 
         #Passe au tour suivant
         turn += 1
