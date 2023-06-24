@@ -14,10 +14,83 @@ win.fill((242, 251, 255))
 def drawMapZone():
     pygame.draw.rect(win, (0, 0, 0), (80, 20, 1020, 1020), 5, border_radius=10)
 
+
+def playerName(i):
+    # Couleurs utilisées
+    BLACK = (0, 0, 0)
+
+    win.fill((242, 251, 255))
+    logo = pygame.image.load("./assets/TitleGame.png")
+    logo = pygame.transform.scale(logo, (600, 180))
+    win.blit(logo, (660, 20))
+    
+    # Police utilisée pour les textes
+    font = pygame.font.Font(None, 32)
+
+    # Variables pour stocker les noms entrés par le joueur
+    name1 = ""
+
+    # Boucle principale
+    done = False
+    clock = pygame.time.Clock()
+
+    while not done:
+        # Gestion des événements
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                done = True
+            elif event.type == pygame.KEYDOWN:
+                # Ajout des caractères entrés par le joueur à la variable correspondante
+                if event.key == pygame.K_BACKSPACE:
+                    name1 = name1[:-1]
+
+                elif event.key == pygame.K_RETURN:
+                    # Création des objets Player avec les noms entrés et fermeture de la fenêtre
+                    player1 = Player(name1)
+                    done = True
+                else:
+                    name1 += event.unicode
+                
+        # Textes et zones de saisie pour les noms
+        x = 600
+        y = 300
+        message = f"Enter Player {i} Name:"
+        text1 = font.render(message, True, BLACK)
+        win.blit(text1, (x, y))
+
+        # Zone de saisie pour le nom du joueur 1
+        
+        rect1 = pygame.Rect(x + 250, y-5, 140, 32)
+        pygame.draw.rect(win, BLACK, rect1, 2)
+        pygame.draw.rect(win, BLACK, rect1, 1)
+        if player.get_id() == 1:
+            text_surface1 = font.render(name1, True, (224, 90, 12))
+        else:
+            text_surface1 = font.render(name1, True, (97, 143, 255))
+        win.blit(text_surface1, (rect1.x + 5, rect1.y + 5))
+
+        pygame.display.flip()
+        clock.tick(60)
+
+    return player1
+
+def initWindow():
+    player1 = playerName(1)
+    player2 = playerName(2)
+
+   
+    
+    print("name1: ", player1.name + "dont l'id est: ", player1.get_id())
+    print("name2: ", player2.name + "dont l'id est: ", player2.get_id())
+
+    return player1.name, player2.name
+
 def drawShips(player):
     #Affichier les bateaux du joueur alignés l'ordre de taille
 
-    if player.name == "Lucas": #TODO: changer la couleur en fonction de l'ID du joueur
+    print("[main] player id: ", player.get_id())
+
+    if player.get_id() == 1:
         boatName = "S1_"
     else:
         boatName = "S2_"
@@ -75,7 +148,7 @@ def drawInfosZone(player):
     PlayerPAtext = font.render('Nbr de tour :', True, (0, 0, 0))
     win.blit(PlayerPAtext, (1230, 20 + 15 + 180 + 50 + 50))
 
-    if player.name == "Lucas": #TODO: changer la couleur en fonction de l'ID du joueur
+    if player.get_id() == 1:
         PlayerName = font.render(player.name, True, (224, 90, 12))
         PlayerPA = font.render(str(player.PA), True, (224, 90, 12))
     else:
@@ -109,19 +182,27 @@ def drawWeapon():
 
 
 def drawAll(player):
+    win.fill((242, 251, 255))
     drawInfosZone(player)
     drawMapZone()
     drawMap(win, m, size, p1, p2)
     drawWeapon()
 
+window_initialized = False
 
 size = 21
 m, p1, p2 = loadGame(size)
+ #Attribution de leurs id
+p1.set_id(1)
+p2.set_id(2)
+
 m.displayMap()
 
 running = True
 turn = 0
 player = whoPlays(turn, p1, p2)
+
+ship_selected = False
 
 while running:
     for event in pygame.event.get():
@@ -129,15 +210,22 @@ while running:
             if event.key == pygame.K_ESCAPE:
                 running = False
 
+    if not window_initialized:
+        print("init 1st time")
+        p1.name, p2.name = initWindow()
+        window_initialized = True
+        print("init done")
+
     drawAll(player)
     
-    mouse = pygame.mouse.get_pos()
-    click = pygame.mouse.get_pressed()
-    selected_ship = selectShipClick(win, player, mouse, click)
+    if not ship_selected:
+        selected_ship = selectShipClick(win, player)
+        if selected_ship is not None:
+            ship_selected = True
 
     # Choix de l'action
-    selected_ship = chooseActions(win, m, player, selected_ship)
-
+    if ship_selected:
+        chooseActions(win, m, player, selected_ship)
 
     pygame.display.update()
 
@@ -145,9 +233,9 @@ while running:
         turn += 1
         player = whoPlays(turn, p1, p2)
         player.PA = 5
-        selectedShip = None  # Réinitialiser la valeur de selectedShip à chaque tour de boucle
+        ship_selected = False
 
     selectedShip = None  # Réinitialiser la valeur de selectedShip à chaque tour de boucle
-
+    
 pygame.quit()
 

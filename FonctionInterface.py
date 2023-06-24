@@ -16,7 +16,9 @@ pygame.init()
 
 
 def drawShips(win, square_size, margin, space_size, player):
-    if player.name == "Lucas": #TODO: changer la couleur en fonction de l'ID du joueur
+    # print("[drawShips()] player id: ", player.get_id())
+
+    if player.get_id() == 1:
         boatName = "S1_"
     else:
         boatName = "S2_"
@@ -89,50 +91,46 @@ def drawMap(win, m1, size, p1, p2):
                 drawShips(win, square_size, margin, space_size, p1)
                 drawShips(win, square_size, margin, space_size, p2)
 
-def selectShipClick(win, player, mouse, click):
-    # mouse = pygame.mouse.get_pos()
-    # click = pygame.mouse.get_pressed()
+def selectShipClick(win, player):
+    mouse = pygame.mouse.get_pos()
+    click = pygame.mouse.get_pressed()
 
     if click[0] == 1:
         #Bouton 5
         if 1400 <= mouse[0] <= 1440 and 400 <= mouse[1] <= 600:
             #retourner le bateau dont la taille est 5
-            print("Bateau de taille 5 sélectionné")
-            return player.ships[0]
+            print("Bateau de taille 2 sélectionné")
+            return player.ships[3]
             
         #Bouton 4
         if 1460 <= mouse[0] <= 1500 and 440 <= mouse[1] <= 600:
             #retourner le bateau dont la taille est 4
-            print("Bateau de taille 4 sélectionné")
-            return player.ships[1]
+            print("Bateau de taille 3 sélectionné")
+            return player.ships[2]
             
         #Bouton 3
         if 1520 <= mouse[0] <= 1560 and 460 <= mouse[1] <= 600:
             #retourner le bateau dont la taille est 3
-            print("Bateau de taille 3 sélectionné")
-            return player.ships[2]
+            print("Bateau de taille 4 sélectionné")
+            return player.ships[1]
             
         #Bouton 2
         if 1580 <= mouse[0] <= 1620 and 520 <= mouse[1] <= 600:
             #retourner le bateau dont la taille est 2
-            print("Bateau de taille 2 sélectionné")
-            return player.ships[3]
+            print("Bateau de taille 5 sélectionné")
+            return player.ships[0]
         
 
 def chooseActions(win, m, player, selectedShip):
     mouse = pygame.mouse.get_pos()
     click = pygame.mouse.get_pressed()
     
-    print("##### 1. Bateau sélectionné : " + str(selectedShip) + "\n")
+    print("Bateau sélectionné : " + str(selectedShip.size) + "\n")
 
     #Bouton Avancé
     if 1340 <= mouse[0] <= 1420 and 675 <= mouse[1] <= 755:
         if click[0] == 1:
-            print("Avancer")
-            print("2. Bateau sélectionné : " + str(selectedShip) + "\n")
-
             if selectedShip is not None:
-                print("Avancer")
                 print("Avancer")
             
                 #afficher un rectagle blanc pour cacher le playerPA
@@ -222,6 +220,5 @@ def chooseActions(win, m, player, selectedShip):
                 selectedShip = None
             else:
                 print("Aucun bateau sélectionné pour reculer")
-    
-    
+        
 

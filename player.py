@@ -33,7 +33,6 @@ class Ship():
 
 # Class joueur: 
 class Player():
-    id = 0
     def __init__(self, name):
         self.name = name        # Nom du joueur
         self.weapon = []        # Liste des armes du joueur
@@ -41,10 +40,13 @@ class Player():
         self.ships = []          # Liste de bateau du joueur
         self.score = 0          # Score TBD
         self.base = []          # La base du joueur
-        Player.id += 1          # ID du joueur, inique
+        self.id = 1          # ID du joueur, inique
 
     def get_id(self):
         return self.id
+
+    def set_id(self,x):
+        self.id = x
     
     # Ajoute une arme a un joueur, si elle n'existe pas encore
     def addWeapon(self, w): 
