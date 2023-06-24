@@ -79,13 +79,5 @@ class Map:
 
     def removeShipMap(self, s: Ship):
         self.ships.remove(s)
-            
-            
 
-
-
-
-
-
-
-
+        

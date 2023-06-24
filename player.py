@@ -35,7 +35,8 @@ class Player():
             self.base = b
     
     def removeShip(self, s: Ship):
-        self.ship.remove(s)
+        if s in self.ship:
+            self.ship.remove(s)
 
     def set_PA (self,x):
         self.PA = x

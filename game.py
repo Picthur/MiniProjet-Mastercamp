@@ -26,6 +26,7 @@ def Attacked(s: Ship, w:Weapon, m: Map, p1: Player, p2: Player):
     print(s.health)
     if(s.health <= 0):
         p = findPlayer(s, p1, p2)
+        eraseShip(s, m)
         p.removeShip(s)
         m.removeShipMap(s)
         
@@ -79,7 +80,6 @@ def Shoot(s: Ship, w: Weapon, way, m: Map, p1: Player, p2: Player):
                             if(ship != None):
                                 print("TOUCHE!")
                                 Attacked(ship, w, m.ships, p1, p2)
-                                m1.displayMap()
                                 break
                         else:
                             print("RATE!")
@@ -95,10 +95,13 @@ def Shoot(s: Ship, w: Weapon, way, m: Map, p1: Player, p2: Player):
                             if(ship != None):
                                 print(f"TOUCHE! par le bateau n°{s.id}")
                                 Attacked(ship, w, m.ships, p1, p2)
-                                m1.displayMap()
                                 break
-                        #else:
-                            #print("RATE!")
+                        else:
+                            if(m.matrix[coordX][coordY + (i)] == "* "):
+                                m.matrix[coordX][coordY + (i)] = "M "
+                            m.displayMap()
+                            if(m.matrix[coordX][coordY + (i)] == "M "):
+                                m.matrix[coordX][coordY + (i)] = "* "
                     else:
                         print("fin du tir")
                         break
@@ -110,7 +113,6 @@ def Shoot(s: Ship, w: Weapon, way, m: Map, p1: Player, p2: Player):
                             if(ship != None):
                                 print(f"TOUCHE! {s.id}")
                                 Attacked(ship, w, m.ships, p1, p2)
-                                m1.displayMap()
                                 break
                         else:
                             print("RATE!")
@@ -124,16 +126,16 @@ def Shoot(s: Ship, w: Weapon, way, m: Map, p1: Player, p2: Player):
                             if(ship != None):
                                 print(f"TOUCHE! {s.id}")
                                 Attacked(ship, w, m.ships, p1, p2)
-                                m1.displayMap()
                                 break
                         else:
                             print("RATE!")
                     else:
                         break
+        print("je remplace les characters")
 
 m1 = Map(20)
 m1.createMap()
-w1 = Weapon(10, 10, 20)
+w1 = Weapon(10, 10, 5)
 p1 = Player("Leo")
 p2 = Player("Tom")
 m1.initializeShips()
