@@ -6,50 +6,74 @@ from collide import *
 def placeShip(ship,matrix):
     match ship.direction:
         case 'E':
-            placeShipEast(ship,matrix)
+            if(placeShipEast(ship,matrix) == "victoire"):
+                return "victoire"
         case 'N':
-            placeShipNorth(ship,matrix)
+            if(placeShipNorth(ship,matrix) == "victoire"):
+                return "victoire"
         case 'S':
-            placeShipSouth(ship,matrix)
+            if(placeShipSouth(ship,matrix) == "victoire"):
+                return "victoire"
         case 'W':
-            placeShipWest(ship,matrix)
+            if(placeShipWest(ship,matrix) == "victoire"):
+                return "victoire"
 
 #Les fonctions ci dessous placent un bateau sur la carte, avec b pour le point arrière, et f l'avant
 def placeShipEast(ship,matrix):
+    win = False
     for i in range(ship.size):
+        if(matrix[ship.row][ship.col + i] == "B1" or matrix[ship.row][ship.col + i] == "B2"):
+            win = True
         if(i == 0):
             matrix[ship.row][ship.col + i] = str(ship.id) + "b"
         elif (i == ship.size - 1):
             matrix[ship.row][ship.col + i] = str(ship.id) + "f"
         else:
             matrix[ship.row][ship.col + i] = str(ship.id) + " "
+    if(win):
+        return "victoire"
 
 def placeShipNorth(ship,matrix):
+    win = False
     for i in range(ship.size):
+        if(matrix[ship.row - i][ship.col] == "B1" or matrix[ship.row - i][ship.col] == "B2"):
+           win = True
         if(i == 0):
             matrix[ship.row - i][ship.col] = str(ship.id) + "b"
         elif (i == ship.size - 1):
             matrix[ship.row - i][ship.col] = str(ship.id) + "f"
         else:
             matrix[ship.row - i][ship.col] = str(ship.id) + " "
+    if(win):
+        return "victoire"
 
 def placeShipSouth(ship,matrix):
+    win = False
     for i in range(ship.size):
+        if(matrix[ship.row + i][ship.col] == "B1" or matrix[ship.row + i][ship.col] == "B2"):
+           win = True
         if(i == 0):
             matrix[ship.row + i][ship.col] = str(ship.id) + "b"
         elif (i == ship.size - 1):
             matrix[ship.row + i][ship.col] = str(ship.id) + "f" 
         else:
             matrix[ship.row + i][ship.col] = str(ship.id) + " "
+    if(win):
+        return "victoire"
 
 def placeShipWest(ship,matrix):
+    win = False
     for i in range(ship.size):
+        if(matrix[ship.row][ship.col - i] == "B1" or matrix[ship.row][ship.col - i] == "B2"):
+           win = True
         if(i == 0):
             matrix[ship.row][ship.col - i] = str(ship.id) + "b"
         elif (i == ship.size - 1):
             matrix[ship.row][ship.col - i] = str(ship.id) + "f"
         else:
             matrix[ship.row][ship.col - i] = str(ship.id) + " "
+    if(win):
+        return "victoire"
 
 #Choisit aléatoirement une direction pour un bateau
 def chooseDirection(random_row, map_size):
@@ -176,7 +200,8 @@ def moveShipForward(ship,map):
         ship.set_col(col)
 
     #Placement du bateau au bon endroit
-    placeShip(ship,map.matrix)
+    if(placeShip(ship,map.matrix) == "victoire"):
+        return "victoire"
 
 #Même fonction qu'au dessus
 def moveShipBackward(ship,map):
@@ -203,7 +228,8 @@ def moveShipBackward(ship,map):
         ship.set_row(row)
         ship.set_col(col)
 
-    placeShip(ship,map.matrix)
+    if(placeShip(ship,map.matrix) == "victoire"):
+        return "victoire"
 
      
 def rotateShipLeft(ship):
