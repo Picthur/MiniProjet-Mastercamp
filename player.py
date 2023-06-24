@@ -40,3 +40,8 @@ class Player():
 
     def set_PA (self,x):
         self.PA = x
+
+    def print_player_ships(self):
+        print("Les bateaux de", self.name, ":")
+        for ship in self.ship:
+            print("- ", ship)
