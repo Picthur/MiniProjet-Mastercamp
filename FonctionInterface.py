@@ -140,7 +140,7 @@ def chooseActions(win, m, player, selectedShip):
                     #Dans ce cas on avance
                     moveShipForward(selectedShip,m)
                     #Coûte un point d'action
-                    player.set_PA(player.PA - 2)
+                    player.set_PA(player.PA - 1)
                 else:
                     print("Action impossible : collision")
 
@@ -165,7 +165,7 @@ def chooseActions(win, m, player, selectedShip):
                     selectedShip.direction = nextShipDirection
                     placeShip(selectedShip,m.matrix)
 
-                    player.set_PA(player.PA - 1)
+                    player.set_PA(player.PA - 2)
                 else:
                     print("Collision détectée")
 
@@ -191,7 +191,7 @@ def chooseActions(win, m, player, selectedShip):
                     selectedShip.direction = nextShipDirection
                     placeShip(selectedShip,m.matrix)
 
-                    player.set_PA(player.PA - 1)
+                    player.set_PA(player.PA - 2)
                 else:
                     print("Collision détectée")
 
@@ -212,7 +212,7 @@ def chooseActions(win, m, player, selectedShip):
 
                 if(not willCollideBackward(selectedShip,m)):
                     moveShipBackward(selectedShip,m)
-                    player.set_PA(player.PA - 2)
+                    player.set_PA(player.PA - 1)
                 else:
                     print("Action impossible : collision")
 

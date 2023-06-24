@@ -63,16 +63,14 @@ def playerName(i):
         rect1 = pygame.Rect(x + 250, y-5, 140, 32)
         pygame.draw.rect(win, BLACK, rect1, 2)
         pygame.draw.rect(win, BLACK, rect1, 1)
-        if player.get_id() == 1:
-            text_surface1 = font.render(name1, True, (224, 90, 12))
-        else:
-            text_surface1 = font.render(name1, True, (97, 143, 255))
+        text_surface1 = font.render(name1, True, (0, 0, 0))
         win.blit(text_surface1, (rect1.x + 5, rect1.y + 5))
 
         pygame.display.flip()
         clock.tick(60)
 
     return player1
+
 
 def initWindow():
     player1 = playerName(1)
@@ -89,24 +87,84 @@ def drawShips(player):
     #Affichier les bateaux du joueur alignés l'ordre de taille
 
     print("[main] player id: ", player.get_id())
+    colorP1 = (224, 90, 12)
+    colorP2 = (97, 143, 255)
 
     if player.get_id() == 1:
         boatName = "S1_"
+        color = colorP1
     else:
         boatName = "S2_"
+        color = colorP2
 
     for ship in player.ships:
+        ###### Affichage du bateau de taille 5 ######
         BoatImg_5 = pygame.image.load("./assets/shipsImg/" + boatName + "5.png")
         BoatImg_5 = pygame.transform.scale(BoatImg_5, (40, 200))
 
+        #point de vie du bateau
+        heatlh = str(player.ships[3].health)
+        maxhealth = str(player.ships[3].maxhealth)
+
+        #Affichage des points de vie du bateau
+        pygame.draw.rect(win, (242, 251, 255), (1400-2, 400 + 200 + 2, 50, 30))
+        font = pygame.font.Font('freesansbold.ttf', 32)
+        healthText = font.render(heatlh + "/" + maxhealth, True, color)
+        healthText = pygame.transform.scale(healthText, (40, 20))
+        win.blit(healthText, (1400+2, 400 + 200 + 5))
+
+
+        ###### Affichage du bateau de taille 4 ######
         BoatImg_4 = pygame.image.load("./assets/shipsImg/" + boatName + "4.png")
         BoatImg_4 = pygame.transform.scale(BoatImg_4, (40, 160))
 
+        #point de vie du bateau
+        heatlh = str(player.ships[2].health)
+        maxhealth = str(player.ships[2].maxhealth)
+
+        #Affichage des points de vie du bateau
+        pygame.draw.rect(win, (242, 251, 255), (1400-2 + 60, 400 + 200 + 2, 50, 30))
+        font = pygame.font.Font('freesansbold.ttf', 32)
+        healthText = font.render(heatlh + "/" + maxhealth, True, color)
+        healthText = pygame.transform.scale(healthText, (40, 20))
+        win.blit(healthText, (1400+2 + 60, 400 + 200 + 5))
+        
+
+        ###### Affichage du bateau de taille 3 ######
         BoatImg_3 = pygame.image.load("./assets/shipsImg/" + boatName + "3.png")
         BoatImg_3 = pygame.transform.scale(BoatImg_3, (40, 120))
 
+        #point de vie du bateau
+        heatlh = str(player.ships[1].health)
+        maxhealth = str(player.ships[1].maxhealth)
+
+        #Affichage des points de vie du bateau
+        pygame.draw.rect(win, (242, 251, 255), (1400-2 + 60 + 60, 400 + 200 + 2, 50, 30))
+        font = pygame.font.Font('freesansbold.ttf', 32)
+        healthText = font.render(heatlh + "/" + maxhealth, True, color)
+        healthText = pygame.transform.scale(healthText, (40, 20))
+        win.blit(healthText, (1400+2 + 60 + 60, 400 + 200 + 5))
+
+        pygame.draw.rect(win, (242, 251, 255), (1400-2 + 60 + 60 + 60, 400 + 200 + 2, 50, 30))
+        heartIcon = pygame.image.load("./assets/healthIcon.png")
+        heartIcon = pygame.transform.scale(heartIcon, (40, 20))
+        win.blit(heartIcon, (1400+2 + 60 + 60 + 60, 400 + 200 + 5))
+
+
+        ###### Affichage du bateau de taille 2 ######
         BoatImg_2 = pygame.image.load("./assets/shipsImg/" + boatName + "2.png")
         BoatImg_2 = pygame.transform.scale(BoatImg_2, (40, 80))
+
+        #point de vie du bateau
+        heatlh = str(player.ships[0].health)
+        maxhealth = str(player.ships[0].maxhealth)
+
+        #Affichage des points de vie du bateau
+        pygame.draw.rect(win, (242, 251, 255), (1400-2 + 60 + 60 + 60, 400 + 200 + 2, 50, 30))
+        font = pygame.font.Font('freesansbold.ttf', 32)
+        healthText = font.render(heatlh + "/" + maxhealth, True, color)
+        healthText = pygame.transform.scale(healthText, (40, 20))
+        win.blit(healthText, (1400+2 + 60 + 60 + 60, 400 + 200 + 5))
 
         x = 1400
         y = 400
@@ -134,39 +192,6 @@ def drawMoveButton():
     win.blit(ReculerIcon, (1340, 875))
 
 
-def drawInfosZone(player):
-    pygame.draw.rect(win, (0, 0, 0), (1180, 20, 700, 1020), 5, border_radius=10)
-
-    TitleImg = pygame.image.load("./assets/TitleGame.png")
-    TitleImg = pygame.transform.scale(TitleImg, (600, 180))
-    win.blit(TitleImg, (1230, 35))
-
-    font = pygame.font.Font('freesansbold.ttf', 32)
-    PlayerText = font.render('Joueur :', True, (0, 0, 0))
-    win.blit(PlayerText, (1230, 20 + 15 + 180 + 50))
-
-    PlayerPAtext = font.render('Nbr de tour :', True, (0, 0, 0))
-    win.blit(PlayerPAtext, (1230, 20 + 15 + 180 + 50 + 50))
-
-    if player.get_id() == 1:
-        PlayerName = font.render(player.name, True, (224, 90, 12))
-        PlayerPA = font.render(str(player.PA), True, (224, 90, 12))
-    else:
-        PlayerName = font.render(player.name, True, (97, 143, 255))
-        PlayerPA = font.render(str(player.PA), True, (97, 143, 255))
-
-    PlayerName = pygame.transform.scale(PlayerName, (80, 40))
-    
-    pygame.draw.rect(win, (242, 251, 255), (1230 + 150, 20 + 15 + 180 + 50, 80, 40)) #Affiche un rectangle blanc pour cacher le nom du joueur précédent
-    win.blit(PlayerName, (1230 + 150, 20 + 15 + 180 + 45))
-    
-    PlayerPA = pygame.transform.scale(PlayerPA, (25, 30))
-    win.blit(PlayerPA, (1445, 20 + 15 + 180 + 45 + 58))  
-
-    drawShips(player)  
-    drawMoveButton()   
-
-
 def drawWeapon():
     Weapon1Icon = pygame.image.load("./assets/Weapon1.png")
     Weapon1Icon = pygame.transform.scale(Weapon1Icon, (80, 80))
@@ -181,16 +206,71 @@ def drawWeapon():
     win.blit(TirerIcon, (1630, 875))
 
 
+def drawInfosZone(player):
+    pygame.draw.rect(win, (0, 0, 0), (1180, 20, 700, 1020), 5, border_radius=10)
+
+    TitleImg = pygame.image.load("./assets/TitleGame.png")
+    TitleImg = pygame.transform.scale(TitleImg, (600, 180))
+    win.blit(TitleImg, (1230, 35))
+
+    font = pygame.font.Font('freesansbold.ttf', 32)
+    PlayerText = font.render('Joueur :', True, (0, 0, 0))
+    win.blit(PlayerText, (1230, 20 + 15 + 180 + 50))
+
+    PlayerPAtext = font.render("Nbr d'action :", True, (0, 0, 0))
+    win.blit(PlayerPAtext, (1230, 20 + 15 + 180 + 50 + 50))
+
+    if player.get_id() == 1:
+        PlayerName = font.render(player.name, True, (224, 90, 12))
+        PlayerPA = font.render(str(player.PA), True, (224, 90, 12))
+    else:
+        PlayerName = font.render(player.name, True, (97, 143, 255))
+        PlayerPA = font.render(str(player.PA), True, (97, 143, 255))
+
+    # w = 80
+    # h = 40
+    #modif de la taille du texte en fonction de la taille du nom du joueur
+    w = len(player.name) * 10
+    h = 40
+        
+    PlayerName = pygame.transform.scale(PlayerName, (w, h))
+    
+    pygame.draw.rect(win, (242, 251, 255), (1230 + 150, 20 + 15 + 180 + 50, 80, 40)) #Affiche un rectangle blanc pour cacher le nom du joueur précédent
+    win.blit(PlayerName, (1230 + 150, 20 + 15 + 180 + 45))
+    
+    PlayerPA = pygame.transform.scale(PlayerPA, (25, 30))
+    win.blit(PlayerPA, (1450, 20 + 15 + 180 + 45 + 58))  
+
+    #Boutton passer le tour en bas au milieu
+    colorP1 = (224, 90, 12)
+    colorP2 = (97, 143, 255)
+    
+    if player.get_id() == 1:
+        color = colorP1
+    else:
+        color = colorP2
+
+    PasserTourText = font.render("Passer le tour", True, color)
+    PasserTourText = pygame.transform.scale(PasserTourText, (150, 30))
+    win.blit(PasserTourText, (1660, 20 + 15 + 180 + 45 + 62))
+    pygame.draw.rect(win, color, (1645, 20 + 15 + 180 + 45 + 55, 180, 40), 2, border_radius=10)
+
+
+    drawShips(player)  
+    drawMoveButton()   
+    drawWeapon()
+
+
 def drawAll(player):
     win.fill((242, 251, 255))
     drawInfosZone(player)
     drawMapZone()
     drawMap(win, m, size, p1, p2)
-    drawWeapon()
+    
 
 window_initialized = False
 
-size = 21
+size = 31
 m, p1, p2 = loadGame(size)
  #Attribution de leurs id
 p1.set_id(1)
@@ -218,6 +298,14 @@ while running:
 
     drawAll(player)
     
+    # Passer le tour
+    mouse = pygame.mouse.get_pos()
+    click = pygame.mouse.get_pressed()
+
+    if 1645 <= mouse[0] <= 1645 + 180 and 20 + 15 + 180 + 45 + 58 <= mouse[1] <= 20 + 15 + 180 + 45 + 58 + 40:
+        if click[0] == 1:
+            player.set_PA(player.PA - 5)
+
     if not ship_selected:
         selected_ship = selectShipClick(win, player)
         if selected_ship is not None:
@@ -239,3 +327,8 @@ while running:
     
 pygame.quit()
 
+
+#TODO:
+# - Ajouter la possibilté de tirer
+#     --> mettre des infos sur les armes (nom, range, degats, etc...    )
+# - Ajouter conditions de victoire
