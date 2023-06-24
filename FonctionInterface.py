@@ -16,8 +16,6 @@ pygame.init()
 
 
 def drawShips(win, square_size, margin, space_size, player):
-    # print("[drawShips()] player id: ", player.get_id())
-
     if player.get_id() == 1:
         boatName = "S1_"
     else:
@@ -82,14 +80,21 @@ def drawMap(win, m1, size, p1, p2):
             elif cell_value == "B2":
                 pygame.draw.rect(win, (242, 251, 255), (x-space_size, y-space_size, square_size+2*space_size, square_size+2*space_size))
                 pygame.draw.rect(win, (255, 97, 97), square_rect)
-            elif cell_value == "* ":
+            else :
                 pygame.draw.rect(win, (242, 251, 255), (x-space_size, y-space_size, square_size+2*space_size, square_size+2*space_size))
                 pygame.draw.rect(win, (12, 171, 232), square_rect)
-            else:
-                pygame.draw.rect(win, (242, 251, 255), (x-space_size, y-space_size, square_size+2*space_size, square_size+2*space_size))
-                pygame.draw.rect(win, (12, 171, 232), square_rect)
+            # else:
+            #     pygame.draw.rect(win, (242, 251, 255), (x-space_size, y-space_size, square_size+2*space_size, square_size+2*space_size))
+            #     pygame.draw.rect(win, (12, 171, 232), square_rect)
+    for row in range(size):
+        for col in range(size):
+            # Récupérer la valeur de la case dans la matrice map
+            cell_value = m1.matrix[row][col]
+
+            if cell_value != "B1" and cell_value != "B2" and cell_value != "* ":
                 drawShips(win, square_size, margin, space_size, p1)
                 drawShips(win, square_size, margin, space_size, p2)
+    
 
 def selectShipClick(win, player):
     mouse = pygame.mouse.get_pos()
@@ -99,25 +104,25 @@ def selectShipClick(win, player):
         #Bouton 5
         if 1400 <= mouse[0] <= 1440 and 400 <= mouse[1] <= 600:
             #retourner le bateau dont la taille est 5
-            print("Bateau de taille 2 sélectionné")
+            print("Bateau de taille 5 sélectionné")
             return player.ships[3]
             
         #Bouton 4
         if 1460 <= mouse[0] <= 1500 and 440 <= mouse[1] <= 600:
             #retourner le bateau dont la taille est 4
-            print("Bateau de taille 3 sélectionné")
+            print("Bateau de taille 4 sélectionné")
             return player.ships[2]
             
         #Bouton 3
         if 1520 <= mouse[0] <= 1560 and 460 <= mouse[1] <= 600:
             #retourner le bateau dont la taille est 3
-            print("Bateau de taille 4 sélectionné")
+            print("Bateau de taille 3 sélectionné")
             return player.ships[1]
             
         #Bouton 2
         if 1580 <= mouse[0] <= 1620 and 520 <= mouse[1] <= 600:
             #retourner le bateau dont la taille est 2
-            print("Bateau de taille 5 sélectionné")
+            print("Bateau de taille 2 sélectionné")
             return player.ships[0]
         
 
@@ -125,20 +130,20 @@ def chooseActions(win, m, player, selectedShip):
     mouse = pygame.mouse.get_pos()
     click = pygame.mouse.get_pressed()
     
-    print("Bateau sélectionné : " + str(selectedShip.size) + "\n")
+    opponentBase = "B" + str(player.id %2 +1)
 
     #Bouton Avancé
     if 1340 <= mouse[0] <= 1420 and 675 <= mouse[1] <= 755:
         if click[0] == 1:
             if selectedShip is not None:
-                print("Avancer")
             
                 #afficher un rectagle blanc pour cacher le playerPA
                 pygame.draw.rect(win, (242, 251, 255), (1445, 20+15+180+45+58, 25, 30))
 
-                if(not willCollideForward(selectedShip,m)):
+                if(not willCollideForward(selectedShip,m, opponentBase)):
                     #Dans ce cas on avance
-                    moveShipForward(selectedShip,m)
+                    if(moveShipForward(selectedShip,m) == "victoire"):
+                        return "victoire"
                     #Coûte un point d'action
                     player.set_PA(player.PA - 1)
                 else:
@@ -152,19 +157,26 @@ def chooseActions(win, m, player, selectedShip):
     #Bouton Tourner gauche
     if 1290 <= mouse[0] <= 1370 and 775 <= mouse[1] <= 855:
         if click[0] == 1:
-            print("Tourner gauche")
             if selectedShip is not None:
                 #afficher un rectagle blanc pour cacher le playerPA
                 pygame.draw.rect(win, (242, 251, 255), (1445, 20+15+180+45+58, 25, 30))
 
                 nextShipDirection = rotateShipLeft(selectedShip)
                 
-                if(not willCollideRotation(selectedShip,nextShipDirection,m)):
+                #Si la rotation ne pose pas de pb de collisions
+                if(not willCollideRotation(selectedShip,nextShipDirection,m, opponentBase)):
+
+                    #On efface l'emplacement du bateau
                     eraseShip(selectedShip,m.matrix)
 
+                    #On change sa direction et on le replace
                     selectedShip.direction = nextShipDirection
-                    placeShip(selectedShip,m.matrix)
+                    print("Placement apres rotation")
+                    if(placeShip(selectedShip,m.matrix) == "victoire"):
+                        print(placeShip(selectedShip,m.matrix), "ICI")
+                        return "victoire"
 
+                    #Cout de rotation : 2 PA
                     player.set_PA(player.PA - 2)
                 else:
                     print("Collision détectée")
@@ -177,20 +189,26 @@ def chooseActions(win, m, player, selectedShip):
     #Bouton Tourner droite
     if 1390 <= mouse[0] <= 1470 and 775 <= mouse[1] <= 855:
         if click[0] == 1:
-            print("Tourner droite")
-
             if selectedShip is not None:
                 #afficher un rectagle blanc pour cacher le playerPA
                 pygame.draw.rect(win, (242, 251, 255), (1445, 20+15+180+45+58, 25, 30))
 
                 nextShipDirection = rotateShipRight(selectedShip)
                 
-                if(not willCollideRotation(selectedShip,nextShipDirection,m)):
+                #Si la rotation ne pose pas de pb de collisions
+                if(not willCollideRotation(selectedShip,nextShipDirection,m, opponentBase)):
+
+                    #On efface l'emplacement du bateau
                     eraseShip(selectedShip,m.matrix)
 
+                    #On change sa direction et on le replace
                     selectedShip.direction = nextShipDirection
-                    placeShip(selectedShip,m.matrix)
+                    print("Placement apres rotation")
+                    if(placeShip(selectedShip,m.matrix) == "victoire"):
+                        print(placeShip(selectedShip,m.matrix), "ICI")
+                        return "victoire"
 
+                    #Cout de rotation : 2 PA
                     player.set_PA(player.PA - 2)
                 else:
                     print("Collision détectée")
@@ -204,14 +222,14 @@ def chooseActions(win, m, player, selectedShip):
     #Bouton Reculer
     if 1340 <= mouse[0] <= 1420 and 875 <= mouse[1] <= 955:
         if click[0] == 1:
-            print("Reculer")
 
             if selectedShip is not None:
                 #afficher un rectagle blanc pour cacher le playerPA
                 pygame.draw.rect(win, (242, 251, 255), (1445, 20+15+180+45+58, 25, 30))
 
-                if(not willCollideBackward(selectedShip,m)):
-                    moveShipBackward(selectedShip,m)
+                if(not willCollideBackward(selectedShip,m,opponentBase)):
+                    if(moveShipBackward(selectedShip,m) == "victoire"):
+                        return "victoire"
                     player.set_PA(player.PA - 1)
                 else:
                     print("Action impossible : collision")

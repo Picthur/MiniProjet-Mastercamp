@@ -75,18 +75,15 @@ def playerName(i):
 def initWindow():
     player1 = playerName(1)
     player2 = playerName(2)
-
-   
     
     print("name1: ", player1.name + "dont l'id est: ", player1.get_id())
     print("name2: ", player2.name + "dont l'id est: ", player2.get_id())
 
     return player1.name, player2.name
 
-def drawShips(player):
+def drawShipsSelection(player):
     #Affichier les bateaux du joueur alignés l'ordre de taille
 
-    print("[main] player id: ", player.get_id())
     colorP1 = (224, 90, 12)
     colorP2 = (97, 143, 255)
 
@@ -256,7 +253,7 @@ def drawInfosZone(player):
     pygame.draw.rect(win, color, (1645, 20 + 15 + 180 + 45 + 55, 180, 40), 2, border_radius=10)
 
 
-    drawShips(player)  
+    drawShipsSelection(player)  
     drawMoveButton()   
     drawWeapon()
 
@@ -283,6 +280,7 @@ turn = 0
 player = whoPlays(turn, p1, p2)
 
 ship_selected = False
+victoir = ''
 
 while running:
     for event in pygame.event.get():
@@ -291,10 +289,8 @@ while running:
                 running = False
 
     if not window_initialized:
-        print("init 1st time")
         p1.name, p2.name = initWindow()
         window_initialized = True
-        print("init done")
 
     drawAll(player)
     
@@ -313,7 +309,11 @@ while running:
 
     # Choix de l'action
     if ship_selected:
-        chooseActions(win, m, player, selected_ship)
+        victoir = chooseActions(win, m, player, selected_ship)
+
+    if victoir == "victoire":
+        print("Fin de partie, victoire de " + player.name)
+        # running = False
 
     pygame.display.update()
 
@@ -324,11 +324,11 @@ while running:
         ship_selected = False
 
     selectedShip = None  # Réinitialiser la valeur de selectedShip à chaque tour de boucle
-    
+
 pygame.quit()
 
 
 #TODO:
 # - Ajouter la possibilté de tirer
 #     --> mettre des infos sur les armes (nom, range, degats, etc...    )
-# - Ajouter conditions de victoire
+# - faire une page plus jolie pour le choix des noms
