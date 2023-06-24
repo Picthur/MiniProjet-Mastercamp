@@ -3,6 +3,7 @@ from placement import *
 from map import *
 from player import *
 from game import *
+from game import Shoot
 
 #Défini qui joue en fonction du nombre de tour
 def whoPlays(turn,p1,p2):
@@ -34,10 +35,10 @@ def selectWeapon(player):
     #A chaque tour défini les bateaux encore "vivants" du joueur
     aliveWeapon = []
     for weapon in player.weapon:
+        print(weapon.id)
         aliveWeapon.append(str(weapon.id))
         
     #Choix du bateau que le joueur veut prendre
-    print(aliveWeapon)
     choice = input("Choisir une arme (id)\n")
         
     if(choice not in aliveWeapon):
@@ -81,21 +82,26 @@ def moveShip(map, player):
 
 
 def selectAction(map, player, player2):
-    
     choice = input("Choisir une action : déplacer, pivoter, tirer, passer\n")
     match choice:
         case "déplacer":
             if(player.PA >= 1):
-                moveShip(map, player)
+                if(moveShip(map, player) == "victoire"):
+                    return "victoire"
         case "pivoter":
             if(player.PA >= 2):
-                rotateShip(map,player)
+                if(rotateShip(map,player) == "victoire"):
+                    return "victoire"
         case "tirer":
             if(player.PA >= 2):
+                print("tirer")
                 w = selectWeapon(player)
                 s = selectShip(map, player)
                 way = selectWay()
                 Shoot(s, w, way, map, player, player2)
+                player.set_PA(player.PA - 2)
+                if(checkWinByOponentShip(map, player)):
+                    return "victoire"
                 player.set_PA(player.PA - 2)
         case "passer":
             player.set_PA(0)
@@ -103,7 +109,7 @@ def selectAction(map, player, player2):
 
 def loadGame():
 
-    map = Map(41)
+    map = Map(21)
     map.createMap()
     map.initializeBase()
     map.initializeShips()
@@ -159,5 +165,16 @@ def rotateShip(map, player):
     else:
         print("Collision détectée")
     
-    
+def checkWinByOponentShip(map, player):
+    #Booléen à retourner
+    win = True
+    #On regarde tous les bateaux encore sur la carte
+    for ship in map.ships:
+        #S'il y en a ne serait ce qu'un seul qui ne fait pas partie des bateaux du joueur actuel, alors il n'a pas tout détruit
+        # et par conséquent, pas gagné donc on set win à False
+        if ship not in player.ship:
+            print(str(ship.id) + "est encore en vie, donc pas gagné")
+            win = False
+            break
+    return win
 

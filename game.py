@@ -75,7 +75,7 @@ def Shoot(s: Ship, w: Weapon, way, m: Map, p1: Player, p2: Player):
                             if(ship != None):
                                 print("les coordonnées du bateau attaqué ", coordShooting(ship))
                                 print("TOUCHE!")
-                                Attacked(ship, w, m.ships, p1, p2)
+                                Attacked(ship, w, m, p1, p2)
                                 break
                         else:
                             if(m.matrix[coordX - (i)][coordY] == "* "):
@@ -110,7 +110,7 @@ def Shoot(s: Ship, w: Weapon, way, m: Map, p1: Player, p2: Player):
                             ship = reconizeObject(m, coordX + (i+1), coordY)
                             if(ship != None):
                                 print(f"TOUCHE! {s.id}")
-                                Attacked(ship, w, m.ships, p1, p2)
+                                Attacked(ship, w, m, p1, p2)
                                 break
                         else:
                             if(m.matrix[coordX + (i)][coordY] == "* "):
@@ -127,7 +127,7 @@ def Shoot(s: Ship, w: Weapon, way, m: Map, p1: Player, p2: Player):
                             ship = reconizeObject(m, coordX, coordY - (i+1))
                             if(ship != None):
                                 print(f"TOUCHE! {s.id}")
-                                Attacked(ship, w, m.ships, p1, p2)
+                                Attacked(ship, w, m, p1, p2)
                                 break
                         else:
                             if(m.matrix[coordX][coordY - (i)] == "* "):
