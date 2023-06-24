@@ -16,5 +16,10 @@ class Ship():
     def get_id(self):
         return self.id
     
+    def set_row(self,x):
+        self.row = x
+
+    def set_col(self,x):
+        self.col = x
 
     

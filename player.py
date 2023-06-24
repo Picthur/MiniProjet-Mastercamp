@@ -41,7 +41,10 @@ class Player():
     def set_PA (self,x):
         self.PA = x
 
-    def print_player_ships(self):
-        print("Les bateaux de", self.name, ":")
-        for ship in self.ship:
-            print("- ", ship)
+    
+    def initializeWeapon(self):
+        w1 = Weapon(10, 10, 20)
+        w2 = Weapon(2, 4, 20)
+        self.addWeapon(w1)
+        self.addWeapon(w2)
+

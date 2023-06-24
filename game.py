@@ -7,7 +7,6 @@ from ship import *
 from gameAction import *
 
 
-
 def findPlayer(s: Ship, p1: Player, p2: Player):
     if(s.id > 5):
         return p2
@@ -144,22 +143,26 @@ def print_ships(player):
     for ship in player.ship:
         print("Bateau {} - Position : ({},{}), Orientation : {}, Taille : {}, PV : {}/{}".format(ship.get_id(), ship.row, ship.col, ship.direction, ship.size, ship.health, ship.maxhealth))
 
+def print_ships_map(map):
+    for ship in map.ships:
+        print("Bateau {} - Position : ({},{}), Orientation : {}, Taille : {}, PV : {}/{}".format(ship.get_id(), ship.row, ship.col, ship.direction, ship.size, ship.health, ship.maxhealth))
 
-m1 = Map(20)
-m1.createMap()
-w1 = Weapon(10, 10, 20)
+#m1 = Map(20)
+#m1.createMap()
+#w1 = Weapon(10, 10, 20)
 
-m1.initializeBase()
-m1.initializeShips()
-p1, p2 = initializePlayer(m1, "Leo", "Tom")
+#m1.initializeBase()
+#m1.initializeShips()
+#p1, p2 = initializePlayer(m1, "Leo", "Tom")
 
-m1.displayMap()
-Shoot(find_ship_by_id(m1,1), w1, "E", m1, p1, p2)
-m1.displayMap()
+#m1.displayMap()
+#Shoot(find_ship_by_id(m1,1), w1, "E", m1, p1, p2)
+#m1.displayMap()
 
-print_ships(p1)
-print_ships(p2)
-
+#print_ships(p1)
+#print_ships(p2)
+#print("\n")
+#print_ships_map(m1)
 #print(s1.row)
 #print(s1.col)
 #print(coordShooting(s1)[0])
