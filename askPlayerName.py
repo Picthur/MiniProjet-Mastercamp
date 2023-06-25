@@ -61,4 +61,3 @@ def playerName(i):
 
     return player1
 
-print(playerName(1).name)

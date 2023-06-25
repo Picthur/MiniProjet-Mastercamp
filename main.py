@@ -1,4 +1,5 @@
 from gameAction import *
+from game import *
 
 def play():
 
@@ -11,7 +12,7 @@ def play():
     while(gameContinue):
 
         #Défini quel joueur doit jouer en fonction du tour auquel on est (1 sur 2)
-        player = whoPlays(turn,p1,p2)
+        player, player2 = whoPlays(turn,p1,p2)
         print("Tour de {}\n".format(player.name))
 
         player.set_PA(5)
@@ -19,7 +20,11 @@ def play():
         while(player.PA > 0):
             map.displayMap()
             print("PA disponibles {}".format(player.PA))
-            selectAction(map, player)    
+            if selectAction(map, player, player2) == "victoire":
+                map.displayMap()
+                gameContinue = False
+                print("Fin de partie, victoire de " + player.name)
+                break     
 
         #Passe au tour suivant
         turn += 1
