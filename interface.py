@@ -3,6 +3,7 @@
 import pygame
 from FonctionInterface import *
 from gameAction import *
+from player import *
 
 pygame.init()
 
@@ -77,8 +78,8 @@ def initWindow():
     player1 = playerName(1)
     player2 = playerName(2)
     
-    print("name1: ", player1.name + "dont l'id est: ", player1.get_id())
-    print("name2: ", player2.name + "dont l'id est: ", player2.get_id())
+    print("name1: ", player1.name + " dont l'id est: ", player1.get_id())
+    print("name2: ", player2.name + " dont l'id est: ", player2.get_id())
 
     return player1.name, player2.name
 
@@ -95,14 +96,18 @@ def drawShipsSelection(player):
         boatName = "S2_"
         color = colorP2
 
-    for ship in player.ships:
+    for ship in player.ship:
         ###### Affichage du bateau de taille 5 ######
         BoatImg_5 = pygame.image.load("./assets/shipsImg/" + boatName + "5.png")
         BoatImg_5 = pygame.transform.scale(BoatImg_5, (40, 200))
 
         #point de vie du bateau
-        heatlh = str(player.ships[3].health)
-        maxhealth = str(player.ships[3].maxhealth)
+        if len(player.ship) < 4:
+            heatlh = str(0)
+            maxhealth = str(5)
+        else:
+            heatlh = str(player.ship[3].health)
+            maxhealth = str(player.ship[3].maxhealth)
 
         #Affichage des points de vie du bateau
         pygame.draw.rect(win, (242, 251, 255), (1400-2, 400 + 200 + 2, 50, 30))
@@ -117,8 +122,12 @@ def drawShipsSelection(player):
         BoatImg_4 = pygame.transform.scale(BoatImg_4, (40, 160))
 
         #point de vie du bateau
-        heatlh = str(player.ships[2].health)
-        maxhealth = str(player.ships[2].maxhealth)
+        if len(player.ship) < 3:
+            heatlh = str(0)
+            maxhealth = str(3)
+        else:
+            heatlh = str(player.ship[2].health)
+            maxhealth = str(player.ship[2].maxhealth)
 
         #Affichage des points de vie du bateau
         pygame.draw.rect(win, (242, 251, 255), (1400-2 + 60, 400 + 200 + 2, 50, 30))
@@ -133,8 +142,12 @@ def drawShipsSelection(player):
         BoatImg_3 = pygame.transform.scale(BoatImg_3, (40, 120))
 
         #point de vie du bateau
-        heatlh = str(player.ships[1].health)
-        maxhealth = str(player.ships[1].maxhealth)
+        if len(player.ship) < 2:
+            heatlh = str(0)
+            maxhealth = str(3)
+        else:
+            heatlh = str(player.ship[1].health)
+            maxhealth = str(player.ship[1].maxhealth)
 
         #Affichage des points de vie du bateau
         pygame.draw.rect(win, (242, 251, 255), (1400-2 + 60 + 60, 400 + 200 + 2, 50, 30))
@@ -154,8 +167,12 @@ def drawShipsSelection(player):
         BoatImg_2 = pygame.transform.scale(BoatImg_2, (40, 80))
 
         #point de vie du bateau
-        heatlh = str(player.ships[0].health)
-        maxhealth = str(player.ships[0].maxhealth)
+        if len(player.ship) < 1:
+            heatlh = str(0)
+            maxhealth = str(2)
+        else:
+            heatlh = str(player.ship[0].health)
+            maxhealth = str(player.ship[0].maxhealth)
 
         #Affichage des points de vie du bateau
         pygame.draw.rect(win, (242, 251, 255), (1400-2 + 60 + 60 + 60, 400 + 200 + 2, 50, 30))
@@ -218,12 +235,13 @@ def drawInfosZone(player):
     PlayerPAtext = font.render("Nbr d'action :", True, (0, 0, 0))
     win.blit(PlayerPAtext, (1230, 20 + 15 + 180 + 50 + 50))
 
-    if player.get_id() == 1:
+    if player.id == 1:
         PlayerName = font.render(player.name, True, (224, 90, 12))
-        PlayerPA = font.render(str(player.PA), True, (224, 90, 12))
-    else:
-        PlayerName = font.render(player.name, True, (97, 143, 255))
-        PlayerPA = font.render(str(player.PA), True, (97, 143, 255))
+        PlayerPA = font.render(str(player.action), True, (224, 90, 12))
+    else: 
+        if player.id != 1:
+            PlayerName = font.render(player.name, True, (97, 143, 255))
+            PlayerPA = font.render(str(player.action), True, (97, 143, 255))
 
     # w = 80
     # h = 40
@@ -270,11 +288,12 @@ window_initialized = False
 
 size = 31
 m, p1, p2 = loadGame(size)
- #Attribution de leurs id
+
+#Attribution de leurs id
 p1.set_id(1)
 p2.set_id(2)
-
-m.displayMap()
+# print(p1.name + " dont l'id est: ", p1.get_id())
+# print(p2.name + " dont l'id est: ", p2.get_id())
 
 running = True
 turn = 0
@@ -289,10 +308,12 @@ while running:
             if event.key == pygame.K_ESCAPE:
                 running = False
 
+    # Initialisation de la fenêtre de jeu (choix des noms des joueurs)
     if not window_initialized:
         p1.name, p2.name = initWindow()
         window_initialized = True
 
+    # Affichage de la fenêtre de jeu
     drawAll(player)
     
     # Passer le tour
@@ -301,16 +322,18 @@ while running:
 
     if 1645 <= mouse[0] <= 1645 + 180 and 20 + 15 + 180 + 45 + 58 <= mouse[1] <= 20 + 15 + 180 + 45 + 58 + 40:
         if click[0] == 1:
-            player.set_PA(player.PA - 5)
+            player.set_action(player.action - 5)
 
+    # Déplacement du bateau
     if not ship_selected:
+        # on selectionne un bateau
         selected_ship = selectShipClick(win, player)
         if selected_ship is not None:
             ship_selected = True
 
     # Choix de l'action
     if ship_selected:
-        victoir = chooseActions(win, m, player, selected_ship)
+        victoir = chooseActions(win, m, player, selected_ship, p1, p2)
 
     if victoir == "victoire":
         print("Fin de partie, victoire de " + player.name)
@@ -318,10 +341,11 @@ while running:
 
     pygame.display.update()
 
-    if player.PA <= 0:
+    # Pemet de passer au joueur suivant
+    if player.action <= 0:
         turn += 1
         player = whoPlays(turn, p1, p2)
-        player.PA = 5
+        player.action = 5
         ship_selected = False
 
     selectedShip = None  # Réinitialiser la valeur de selectedShip à chaque tour de boucle
@@ -330,6 +354,7 @@ pygame.quit()
 
 
 #TODO:
-# - Ajouter la possibilté de tirer
-#     --> mettre des infos sur les armes (nom, range, degats, etc...    )
-# - page de victoire
+# - afficher la rocket
+# - ecran de fin
+# - vrifier si victoire fonctionne
+# - réorganiser les fichiers
