@@ -67,9 +67,9 @@ def placeShipWest(ship,matrix):
         if(matrix[ship.row][ship.col - i] == "B1" or matrix[ship.row][ship.col - i] == "B2"):
            win = True
         if(i == 0):
-            matrix[ship.row][ship.col - i] = str(ship.id) + "b"
+            matrix[ship.row][ship.col - i] = "b" + str(ship.id)
         elif (i == ship.size - 1):
-            matrix[ship.row][ship.col - i] = str(ship.id) + "f"
+            matrix[ship.row][ship.col - i] = "f" + str(ship.id)
         else:
             matrix[ship.row][ship.col - i] = str(ship.id) + " "
     if(win):

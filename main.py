@@ -12,7 +12,8 @@ def play():
 
         #Défini quel joueur doit jouer en fonction du tour auquel on est (1 sur 2)
         player = whoPlays(turn,p1,p2)
-    
+        print("Tour de {}\n".format(player.name))
+
         player.set_PA(5)
         #Demande au joueur de choisir une action tant qu'il le peut (PA > 0)
         while(player.PA > 0):

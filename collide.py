@@ -1,5 +1,4 @@
 
-
 #Fonction de detection de colision dans un carré de 3x3 avec pour centre une coordonnée
 def willCollideOnPlacement(random_row, random_column, size, direction, map):
 
