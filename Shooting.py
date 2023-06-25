@@ -1,9 +1,9 @@
 from collide import *
 from placement import *
-from map import *
-from player import *
+from ClassMap import *
+from ClassPlayer import *
 from base import *
-from ship import *
+from ClassShip import *
 from gameAction import *
 
 

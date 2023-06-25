@@ -1,7 +1,7 @@
 from base import *
-from ship import *
+from ClassShip import *
 from placement import * 
-from player import *
+from ClassPlayer import *
 import random
 
 

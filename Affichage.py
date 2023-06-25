@@ -1,16 +1,19 @@
-# interface graphique pour le projet Mastercamp
-
 import pygame
-from FonctionInterface import *
+
+from InteractionPlayer import *
 from gameAction import *
-from player import *
+from ClassPlayer import *
+from ClassShip import *
+from ClassWeapon import *
+from base import *
+from ClassMap import *
+
 
 pygame.init()
 
 win = pygame.display.set_mode((1920, 1080))
 pygame.display.set_caption("Mastercamp")
 win.fill((242, 251, 255))
-
 
 def drawMapZone():
     pygame.draw.rect(win, (0, 0, 0), (80, 20, 1020, 1020), 5, border_radius=10)
@@ -276,85 +279,46 @@ def drawInfosZone(player):
     drawMoveButton()   
     drawWeapon()
 
-
-def drawAll(player):
+def victory(player):
     win.fill((242, 251, 255))
-    drawInfosZone(player)
-    drawMapZone()
-    drawMap(win, m, size, p1, p2)
+
+    bgImg = pygame.image.load("./assets/bgImg.jpg")
+    bgImg = pygame.transform.scale(bgImg, (1920, 1080))
+    win.blit(bgImg, (0, 0))
     
+    logo = pygame.image.load("./assets/TitleGame.png")
+    logo = pygame.transform.scale(logo, (700, 200))
+    win.blit(logo, (600, 100))
 
-window_initialized = False
-
-size = 31
-m, p1, p2 = loadGame(size)
-
-#Attribution de leurs id
-p1.set_id(1)
-p2.set_id(2)
-# print(p1.name + " dont l'id est: ", p1.get_id())
-# print(p2.name + " dont l'id est: ", p2.get_id())
-
-running = True
-turn = 0
-player = whoPlays(turn, p1, p2)
-
-ship_selected = False
-victoir = ''
-
-while running:
-    for event in pygame.event.get():
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_ESCAPE:
-                running = False
-
-    # Initialisation de la fenêtre de jeu (choix des noms des joueurs)
-    if not window_initialized:
-        p1.name, p2.name = initWindow()
-        window_initialized = True
-
-    # Affichage de la fenêtre de jeu
-    drawAll(player)
+    x = 770
+    y = 500
+    font = pygame.font.Font('freesansbold.ttf', 32)
+    PlayerText = font.render('Le gagnant est :', True, (0, 0, 0))
+    win.blit(PlayerText, (x, y))
     
-    # Passer le tour
-    mouse = pygame.mouse.get_pos()
-    click = pygame.mouse.get_pressed()
+    if player.id == 1:
+        PlayerName = font.render(player.name, True, (224, 90, 12))
+    else: 
+        if player.id != 1:
+            PlayerName = font.render(player.name, True, (97, 143, 255))
+    w = len(player.name) * 12
+    h = 45
+    PlayerName = pygame.transform.scale(PlayerName, (w, h))
+    win.blit(PlayerName, (x + 287, y-10))
 
-    if 1645 <= mouse[0] <= 1645 + 180 and 20 + 15 + 180 + 45 + 58 <= mouse[1] <= 20 + 15 + 180 + 45 + 58 + 40:
-        if click[0] == 1:
-            player.set_action(player.action - 5)
+    #bouton quit au milieu de la fenetre en bas
+    QuitText = font.render("Quitter", True, (255, 255, 255))
+    QuitText = pygame.transform.scale(QuitText, (130, 30))
+    win.blit(QuitText, (915, 900))
+    pygame.draw.rect(win, (255, 255, 255), (900, 900 - 5, 180, 40), 2, border_radius=10)
+    
+# mouse = pygame.mouse.get_pos()
+# click = pygame.mouse.get_pressed()
 
-    # Déplacement du bateau
-    if not ship_selected:
-        # on selectionne un bateau
-        selected_ship = selectShipClick(win, player)
-        if selected_ship is not None:
-            ship_selected = True
-
-    # Choix de l'action
-    if ship_selected:
-        victoir = chooseActions(win, m, player, selected_ship, p1, p2)
-
-    if victoir == "victoire":
-        print("Fin de partie, victoire de " + player.name)
-        # running = False
-
+# if 1645 <= mouse[0] <= 1645 + 180 and 20 + 15 + 180 + 45 + 58 <= mouse[1] <= 20 + 15 + 180 + 45 + 58 + 40:
+#     if click[0] == 1:
+#         return False
+        
     pygame.display.update()
 
-    # Pemet de passer au joueur suivant
-    if player.action <= 0:
-        turn += 1
-        player = whoPlays(turn, p1, p2)
-        player.action = 5
-        ship_selected = False
-
-    selectedShip = None  # Réinitialiser la valeur de selectedShip à chaque tour de boucle
-
-pygame.quit()
-
-
-#TODO:
-# - afficher la rocket
-# - ecran de fin
-# - vrifier si victoire fonctionne
-# - réorganiser les fichiers
+    

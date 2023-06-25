@@ -1,8 +1,8 @@
 from base import *
-from ship import *
+from ClassShip import *
 from placement import * 
-from map import *
-from weapon import *
+from ClassMap import *
+from ClassWeapon import *
 
 # Class joueur: 
 class Player():

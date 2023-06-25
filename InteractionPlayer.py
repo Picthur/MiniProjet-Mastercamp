@@ -4,12 +4,12 @@ import pygame
 from pygame import MOUSEBUTTONDOWN, MOUSEBUTTONUP, MOUSEMOTION
 from pygame.event import get
 from pygame.mouse import get_pos, get_pressed
-from map import *
+from ClassMap import *
 from base import *
-from ship import *
+from ClassShip import *
 from placement import *
-from game import *
-from player import *
+from Shooting import *
+from ClassPlayer import *
 from gameAction import *
 
 pygame.init()

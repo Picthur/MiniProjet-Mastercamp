@@ -1,4 +1,4 @@
-from weapon import *
+from ClassWeapon import *
 
 class Ship():
     nb = 0

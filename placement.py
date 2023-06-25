@@ -1,5 +1,5 @@
 import random
-from ship import *
+from ClassShip import *
 from collide import *
 
 #Place le bateau sur la carte en fonction de sa direction
