@@ -1,5 +1,4 @@
 
-
 #Fonction de detection de colision dans un carré de 3x3 avec pour centre une coordonnée
 def willCollideOnPlacement(random_row, random_column, size, direction, map):
 
@@ -38,7 +37,7 @@ def willCollideOnPlacement(random_row, random_column, size, direction, map):
     return False
 
 #Vérifie si en se déplacant vers l'avant il y aura une collision
-def willCollideForward(ship, map, opponentBase):
+def willCollideForward(ship, map):
 
     #Vu que la coordonée de base du bateau est à l'arrière, on se déplace jusqu'à l'avant
     (row,col) = goToFront(ship)
@@ -63,12 +62,12 @@ def willCollideForward(ship, map, opponentBase):
         if((col < 0 or col > (map.size - 1)) or (row < 0 or row > (map.size -1))):
             return True
         #Si il y a quelque chose d'autre que de l'eau (*), alors il y aura une collision
-        if(map.matrix[row][col] != "* " and map.matrix[row][col] != opponentBase):
+        if(map.matrix[row][col] != "* "):
             return True
         
     return False
 
-def willCollideBackward(ship, map, opponentBase):
+def willCollideBackward(ship, map):
 
     row = ship.row
     col = ship.col
@@ -93,8 +92,8 @@ def willCollideBackward(ship, map, opponentBase):
         if((col < 0 or col > (map.size - 1)) or (row < 0 or row > (map.size -1))):
             return True
         
-        #Si il y a quelque chose d'autre que de l'eau (*) ou la base adverse, alors il y aura une collision
-        if(map.matrix[row][col] != "* " and map.matrix[row][col] != opponentBase):
+        #Si il y a quelque chose d'autre que de l'eau (*), alors il y aura une collision
+        if(map.matrix[row][col] != "* "):
             return True
         
     return False
@@ -122,7 +121,7 @@ def goToFront(ship):
     #Renvoi de la position de départ pour avancer
     return (row,col)  
 
-def willCollideRotation(ship,nextShipDirection,map, opponentBase):
+def willCollideRotation(ship,nextShipDirection,map):
 
     row = ship.row
     col = ship.col
@@ -147,8 +146,8 @@ def willCollideRotation(ship,nextShipDirection,map, opponentBase):
         if((col < 0 or col > (map.size - 1)) or (row < 0 or row > (map.size -1))):
             return True
         
-        #Si il y a quelque chose d'autre que de l'eau (*) ou la base adverse, alors il y aura une collision
-        if(map.matrix[row][col] != "* " and map.matrix[row][col] != opponentBase):
+        #Si il y a quelque chose d'autre que de l'eau (*), alors il y aura une collision
+        if(map.matrix[row][col] != "* "):
             return True
         
     return False
