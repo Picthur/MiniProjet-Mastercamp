@@ -1,20 +1,20 @@
 from base import *
-from ship import *
+from ClassShip import *
 from placement import * 
+from ClassPlayer import *
 import random
 
 
 class Map: 
     #Definition de la taille des bases
-    BASE_HEIGHT = 7 
-    BASE_LENGTH = 6
+    BASE_HEIGHT = 5 
+    BASE_LENGTH = 4
 
     #Definition de la taille de la carte
     def __init__(self, size):
         self.size = size
         self.bases = []
         self.ships = []
-        self.matrix = []
 
     #Creation de la matrice correspondant à la carte
     def createMap(self):
@@ -76,12 +76,8 @@ class Map:
 
             #On les place
             placeShip(s2, self.matrix)
-            
 
+    def removeShipMap(self, s: Ship):
+        self.ships.remove(s)
 
-
-
-
-
-
-
+        
