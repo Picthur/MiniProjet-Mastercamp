@@ -62,7 +62,7 @@ while running:
 
     # Choix de l'action
     if ship_selected:
-        victoire = chooseActions(win, m, player, selected_ship, p1, p2)
+        victoire = chooseActions(win, m, player, selected_ship, p1, p2, mouse, click)
 
     if victoire == "victoire":
         print("Fin de partie, victoire de " + player.name)
@@ -94,6 +94,6 @@ pygame.quit()
 
 
 #TODO:
-# - faire en sorte que le joueur puisse choisir un weapon en cliquant dessus
-# - faire mieu apparettre le bateau selectionné par le joueur (carré rouge autour)
-# - vérifier si victoire fonctionne
+# - faire en sorte que le joueur puisse choisir un weapon en cliquant dessus (pour l'instant c'est avec le terminale
+# - faire mieux apparaitre le bateau sélectionné par le joueur (carré rouge autour)
+# - faire un meilleur README
