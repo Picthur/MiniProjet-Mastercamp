@@ -279,6 +279,7 @@ def drawInfosZone(player):
     drawMoveButton()   
     drawWeapon()
 
+
 def victory(player):
     win.fill((242, 251, 255))
 

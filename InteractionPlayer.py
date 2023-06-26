@@ -246,12 +246,31 @@ def selectShipClick(win, player):
             return player.ship[0]
 
 
+def selectWeaponClick(player, mouse, click, selectedShip):
+    if 1628 <= mouse[0] <= 1710 and 675 <= mouse[1] <= 755:
+        if click[0] == 1:
+            if selectedShip is not None:
+                print("Arme 1 sélectionnée")
+                return player.weapon[0]
+            else:
+                print("Aucun bateau sélectionné pour choisir une arme")
 
-def chooseActions(win, m, player, selectedShip, p1, p2):
-    mouse = pygame.mouse.get_pos()
-    click = pygame.mouse.get_pressed()
+    # selection arme 2
+    if 1628 <= mouse[0] <= 1710 and 775 <= mouse[1] <= 855:
+        if click[0] == 1:
+            if selectedShip is not None:
+                print("Arme 2 sélectionnée")
+                return player.weapon[1]
+            else:
+                print("Aucun bateau sélectionné pour choisir une arme")
+
+
+def chooseActions(win, m, player, selectedShip, p1, p2, mouse, click):
+    # mouse = pygame.mouse.get_pos()
+    # click = pygame.mouse.get_pressed()
 
     opponentBase = "B" + str(player.id %2 +1)
+    weapon_selected = False
 
     #Bouton Avancé
     if 1340 <= mouse[0] <= 1420 and 675 <= mouse[1] <= 755:
@@ -361,6 +380,31 @@ def chooseActions(win, m, player, selectedShip, p1, p2):
                 print("Aucun bateau sélectionné pour reculer")
 
     #Bouton Tirer
+    # if 1630 <= mouse[0] <= 1710 and 875 <= mouse[1] <= 955:
+    #     if click[0] == 1:
+    #         if selectedShip is not None:
+    #             print("tirer")
+
+    #             while not weapon_selected:
+    #                 w = selectWeapon(player, mouse, click, selectedShip)
+    #                 if w is not None:
+    #                     shipAttacked = Shoot(selectedShip, w, selectedShip.direction, m, p1, p2)
+    #                     print("shipAttacked size : ", shipAttacked.size)
+    #                     print("shipAttacked health : ", shipAttacked.health)
+
+    #                     shootRocket(win, m, selectedShip, shipAttacked)
+
+    #                     if(checkWinByOponentShip(m, p1)):
+    #                         return "victoire"
+    #                     player.set_action(player.action - 2)
+
+    #                     pygame.display.update()
+    #                     selectedShip = None
+    #                     weapon_selected = True 
+    #         else:
+    #             print("Aucun bateau sélectionné pour tirer")
+
+    #Bouton Tirer
     if 1630 <= mouse[0] <= 1710 and 875 <= mouse[1] <= 955:
         if click[0] == 1:
             if selectedShip is not None:
@@ -381,5 +425,7 @@ def chooseActions(win, m, player, selectedShip, p1, p2):
                 selectedShip = None
             else:
                 print("Aucun bateau sélectionné pour tirer")
-        
+
+
+            
 
