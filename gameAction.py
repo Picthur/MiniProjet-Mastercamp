@@ -12,24 +12,6 @@ def whoPlays(turn,p1,p2):
         return p2
  
 
-def selectWeapon(player):                                                #TODO: A changer par l'interface graphique
-    #A chaque tour défini les bateaux encore "vivants" du joueur
-    aliveWeapon = []
-    for weapon in player.weapon:
-        print(weapon.id)
-        aliveWeapon.append(str(weapon.id))
-        
-    #Choix du bateau que le joueur veut prendre
-    choice = input("Choisir une arme (id)\n")
-        
-    if(choice not in aliveWeapon):
-        print("Ce n'est pas une arme valable")
-    else:
-        #Selection d'une arme
-        weapon = player.weapon[int(choice) - 1]
-        return weapon
-   
-
 def loadGame(size):
 
     map = Map(size)

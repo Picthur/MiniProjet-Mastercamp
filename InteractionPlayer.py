@@ -1,11 +1,13 @@
 # fichier comprenant les fonctions de l'interface
 
 import pygame
+import sys
+
 from pygame import MOUSEBUTTONDOWN, MOUSEBUTTONUP, MOUSEMOTION
 from pygame.event import get
 from pygame.mouse import get_pos, get_pressed
 from ClassMap import *
-from base import *
+from Classbase import *
 from ClassShip import *
 from placement import *
 from Shooting import *
@@ -18,6 +20,7 @@ pygame.init()
 delay = 200  # Délai en millisecondes
 last_update = pygame.time.get_ticks()  # Temps du dernier déplacement de la roquette
 
+global getSelectWeapon
 
 def drawShips(win, square_size, margin, space_size, player):
     if player.get_id() == 1:
@@ -55,124 +58,6 @@ def drawShips(win, square_size, margin, space_size, player):
 
         # Dessiner le bateau à sa position calculée
         win.blit(BoatImg, (x, y))
-
-
-def shootRocket(win, m, selectedShip, shipAttacked):
-    MapZoneSize = 1020
-
-    # Calcul des dimensions des carrés et de l'espace entre eux
-    space_size = 2
-    square_size = (MapZoneSize - (m.size - 1) * space_size) // m.size # square_size correspond à la taille d'un carré en pixel 
-    margin = (MapZoneSize - (square_size+space_size)*m.size)//2 # margin correspond à la marge entre le bord de la fenêtre et le carré
-
-    waitTime = 300
-    
-    if selectedShip is not None and shipAttacked is not None:
-        rocketImg = pygame.image.load("./assets/Weapon2.png")
-        rocketImg = pygame.transform.scale(rocketImg, (square_size+square_size/3, square_size + space_size * 2))
-
-        if selectedShip.direction == 'S':
-            rocketImg = pygame.transform.rotate(rocketImg, 180)
-            x = 80 + margin + space_size + selectedShip.col * (square_size + space_size)
-            y = 20 + margin + space_size + selectedShip.row * (square_size + space_size) + (square_size + space_size) * selectedShip.size
-
-            # Afficher l'image de la roquette
-            win.blit(rocketImg, (x, y))
-
-            # Déplacer la roquette jusuq'à la case du bateau attaqué
-            for i in range(shipAttacked.row - selectedShip.row - selectedShip.size):
-                # Effacer la roquette de la case précédente
-                if y > 20 + margin + space_size + selectedShip.row * (square_size + space_size) + (square_size + space_size) * selectedShip.size:
-                    prev_x = x
-                    prev_y = y - (square_size + space_size)
-                    pygame.draw.rect(win, (242, 251, 255), (prev_x-space_size, prev_y-space_size, square_size+2*space_size, square_size+2*space_size))
-                    pygame.draw.rect(win, (12, 171, 232), (prev_x, prev_y, square_size, square_size))
-                    pygame.display.update()
-
-                y += square_size + space_size
-                win.blit(rocketImg, (x, y))
-                pygame.display.update()
-                pygame.time.wait(waitTime)
-
-        elif selectedShip.direction == 'E':
-            rocketImg = pygame.transform.rotate(rocketImg, -90)
-            x = 80 + margin + space_size + selectedShip.col * (square_size + space_size) + (square_size + space_size) * selectedShip.size
-            y = 20 + margin + space_size + selectedShip.row * (square_size + space_size)
-
-            # Afficher l'image de la roquette
-            win.blit(rocketImg, (x, y))
-
-            # Déplacer la roquette jusuq'à la case du bateau attaqué
-            for i in range(shipAttacked.col - selectedShip.col - selectedShip.size):
-                # Effacer la roquette de la case précédente
-                if x > 80 + margin + space_size + selectedShip.col * (square_size + space_size) + (square_size + space_size) * selectedShip.size:
-                    prev_x = x - (square_size + space_size)
-                    prev_y = y
-                    pygame.draw.rect(win, (242, 251, 255), (prev_x-space_size, prev_y-space_size, square_size+2*space_size, square_size+2*space_size))
-                    pygame.draw.rect(win, (12, 171, 232), (prev_x, prev_y, square_size, square_size))
-                    pygame.display.update()
-
-                x += square_size + space_size
-                win.blit(rocketImg, (x, y))
-                pygame.display.update()
-                pygame.time.wait(waitTime)
-
-        elif selectedShip.direction == 'W':
-            rocketImg = pygame.transform.rotate(rocketImg, 90)
-            x = 80 + margin + space_size + (selectedShip.col - selectedShip.size) * (square_size + space_size) - square_size - space_size
-            y = 20 + margin + space_size + selectedShip.row * (square_size + space_size)
-
-            # Afficher l'image de la roquette
-            win.blit(rocketImg, (x, y))
-
-            # Déplacer la roquette jusuq'à la case du bateau attaqué
-
-            if shipAttacked.direction == 'N' or shipAttacked.direction == 'S':
-                rangeRocket = selectedShip.row - shipAttacked.row - square_size - space_size
-            elif shipAttacked.direction == 'E' or shipAttacked.direction == 'W':
-                rangeRocket = selectedShip.row - shipAttacked.row - shipAttacked.size
-
-            for i in range(rangeRocket):
-                # Effacer la roquette de la case précédente
-                if x > 80 + margin + space_size + selectedShip.col * (square_size + space_size) + (square_size + space_size) * selectedShip.size:
-                    prev_x = x - (square_size + space_size)
-                    prev_y = y
-                    pygame.draw.rect(win, (242, 251, 255), (prev_x-space_size, prev_y-space_size, square_size+2*space_size, square_size+2*space_size))
-                    pygame.draw.rect(win, (12, 171, 232), (prev_x, prev_y, square_size, square_size))
-                    pygame.display.update()
-
-                x -= square_size + space_size
-                win.blit(rocketImg, (x, y))
-                pygame.display.update()
-                pygame.time.wait(waitTime)
-
-        elif selectedShip.direction == 'N':
-            x = 80 + margin + space_size + selectedShip.col * (square_size + space_size)
-            y = 20 + margin + space_size + (selectedShip.row + 1 - selectedShip.size) * (square_size + space_size) - square_size - space_size
-
-            # Afficher l'image de la roquette
-            win.blit(rocketImg, (x, y))
-
-            # Déplacer la roquette jusuq'à la case du bateau attaqué
-
-            if shipAttacked.direction == 'N' or shipAttacked.direction == 'S':
-                rangeRocket = selectedShip.row - shipAttacked.row - shipAttacked.size
-            elif shipAttacked.direction == 'E' or shipAttacked.direction == 'W':
-                rangeRocket = selectedShip.row - shipAttacked.row - square_size - space_size
-
-            for i in range(rangeRocket):
-                # Effacer la roquette de la case précédente
-                if y > 20 + margin + space_size + selectedShip.row * (square_size + space_size) + (square_size + space_size) * selectedShip.size:
-                    prev_x = x
-                    prev_y = y - (square_size + space_size)
-                    pygame.draw.rect(win, (242, 251, 255), (prev_x-space_size, prev_y-space_size, square_size+2*space_size, square_size+2*space_size))
-                    pygame.draw.rect(win, (12, 171, 232), (prev_x, prev_y, square_size, square_size))
-                    pygame.display.update()
-
-                y -= square_size + space_size
-                win.blit(rocketImg, (x, y))
-                pygame.display.update()
-                pygame.time.wait(waitTime)
 
 
 def drawMap(win, m1, size, p1, p2):
@@ -216,10 +101,140 @@ def drawMap(win, m1, size, p1, p2):
                 drawShips(win, square_size, margin, space_size, p2)
     
 
-def selectShipClick(win, player):
+def shootRocket(win, m, selectedShip, shipAttacked, weapon_selected):
+    MapZoneSize = 1020
+
+    # Calcul des dimensions des carrés et de l'espace entre eux
+    space_size = 2
+    square_size = (MapZoneSize - (m.size - 1) * space_size) // m.size # square_size correspond à la taille d'un carré en pixel 
+    margin = (MapZoneSize - (square_size+space_size)*m.size)//2 # margin correspond à la marge entre le bord de la fenêtre et le carré
+
+    waitTime = 300
+    
+    if weapon_selected == 0:
+        rocketImg = pygame.image.load("./assets/Weapon1.png")
+    elif weapon_selected == 1:
+        rocketImg = pygame.image.load("./assets/Weapon2.png")
+
+    print("selectedShip.direction = ", selectedShip.direction)
+    print("weapon_selected = ", weapon_selected)
+    print()
+    
+    if selectedShip is not None and shipAttacked is not None:
+        rocketImg = pygame.transform.scale(rocketImg, (square_size+square_size/3, square_size + space_size * 2))
+
+        if selectedShip.direction == 'S':
+            rocketImg = pygame.transform.rotate(rocketImg, 180)
+            x = 80 + margin + space_size + selectedShip.col * (square_size + space_size)
+            y = 20 + margin + space_size + selectedShip.row * (square_size + space_size) + (square_size + space_size) * selectedShip.size
+
+            rangeRocket = shipAttacked.row - selectedShip.row - selectedShip.size
+            
+            # Déplacer la roquette jusuq'à la case du bateau attaqué
+            for i in range(rangeRocket-1):
+                # Effacer la roquette de la case précédente
+                if y > 20 + margin + space_size + selectedShip.row * (square_size + space_size) + (square_size + space_size) * selectedShip.size:
+                    prev_x = x
+                    prev_y = y - (square_size + space_size)
+                    pygame.draw.rect(win, (242, 251, 255), (prev_x-space_size, prev_y-space_size, square_size+2*space_size, square_size+2*space_size))
+                    pygame.draw.rect(win, (12, 171, 232), (prev_x, prev_y, square_size, square_size))
+                    pygame.display.update()
+
+                y += square_size + space_size
+                win.blit(rocketImg, (x, y))
+                pygame.display.update()
+                pygame.time.wait(waitTime)
+
+        elif selectedShip.direction == 'E':
+            rocketImg = pygame.transform.rotate(rocketImg, -90)
+            x = 80 + margin + space_size + selectedShip.col * (square_size + space_size) + (square_size + space_size) * selectedShip.size
+            y = 20 + margin + space_size + selectedShip.row * (square_size + space_size)
+
+            rangeRocket = shipAttacked.col - selectedShip.col - selectedShip.size 
+
+            # Déplacer la roquette jusuq'à la case du bateau attaqué
+            for i in range(rangeRocket-1):
+                # Effacer la roquette de la case précédente
+                if x > 80 + margin + space_size + selectedShip.col * (square_size + space_size) + (square_size + space_size) * selectedShip.size:
+                    prev_x = x - (square_size + space_size)
+                    prev_y = y
+                    pygame.draw.rect(win, (242, 251, 255), (prev_x-space_size, prev_y-space_size, square_size+2*space_size, square_size+2*space_size))
+                    pygame.draw.rect(win, (12, 171, 232), (prev_x, prev_y, square_size, square_size))
+                    pygame.display.update()
+                
+                # permet de faire une pause entre chaque déplacement de la roquette
+                x += square_size + space_size
+                win.blit(rocketImg, (x, y))
+                pygame.display.update()
+                pygame.time.wait(waitTime)
+
+        elif selectedShip.direction == 'W':
+            rocketImg = pygame.transform.rotate(rocketImg, 90)
+            x = 80 + margin + space_size + (selectedShip.col - selectedShip.size) * (square_size + space_size) - square_size - space_size
+            y = 20 + margin + space_size + selectedShip.row * (square_size + space_size)
+
+
+            if shipAttacked.direction == 'N' or shipAttacked.direction == 'S':
+                rangeRocket = selectedShip.col - shipAttacked.col - 1
+            elif shipAttacked.direction == 'E' or shipAttacked.direction == 'W':
+                rangeRocket = selectedShip.col - shipAttacked.col - shipAttacked.size
+
+            # Déplacer la roquette jusuq'à la case du bateau attaqué            
+            for i in range(rangeRocket-1):
+                print("i = ", i)
+                # Effacer la roquette de la case précédente
+                if x > 80 + margin + space_size + selectedShip.col * (square_size + space_size) + (square_size + space_size) * selectedShip.size:
+                    prev_x = x - (square_size + space_size)
+                    prev_y = y
+                    pygame.draw.rect(win, (242, 251, 255), (prev_x-space_size, prev_y-space_size, square_size+2*space_size, square_size+2*space_size))
+                    pygame.draw.rect(win, (12, 171, 232), (prev_x, prev_y, square_size, square_size))
+                    pygame.display.update()
+
+                x -= square_size + space_size
+                win.blit(rocketImg, (x, y))
+                pygame.display.update()
+                pygame.time.wait(waitTime)
+
+        elif selectedShip.direction == 'N':
+            x = 80 + margin + space_size + selectedShip.col * (square_size + space_size)
+            y = 20 + margin + space_size + (selectedShip.row + 1 - selectedShip.size) * (square_size + space_size) - square_size - space_size
+
+            # Déplacer la roquette jusuq'à la case du bateau attaqué
+
+            if shipAttacked.direction == 'N' or shipAttacked.direction == 'S':
+                rangeRocket = selectedShip.row - shipAttacked.row - shipAttacked.size
+            elif shipAttacked.direction == 'E' or shipAttacked.direction == 'W':
+                rangeRocket = selectedShip.row - shipAttacked.row - 1
+
+            for i in range(rangeRocket-1):
+                # Effacer la roquette de la case précédente
+                if y > 20 + margin + space_size + selectedShip.row * (square_size + space_size) + (square_size + space_size) * selectedShip.size:
+                    prev_x = x
+                    prev_y = y - (square_size + space_size)
+                    pygame.draw.rect(win, (242, 251, 255), (prev_x-space_size, prev_y-space_size, square_size+2*space_size, square_size+2*space_size))
+                    pygame.draw.rect(win, (12, 171, 232), (prev_x, prev_y, square_size, square_size))
+                    pygame.display.update()
+
+                y -= square_size + space_size
+                win.blit(rocketImg, (x, y))
+                pygame.display.update()
+                pygame.time.wait(waitTime)
+
+        # Effacer la roquette de la case précédente
+        prev_x = x
+        prev_y = y
+        pygame.draw.rect(win, (242, 251, 255), (prev_x-space_size, prev_y-space_size, square_size+2*space_size, square_size+2*space_size))
+        pygame.draw.rect(win, (12, 171, 232), (prev_x, prev_y, square_size, square_size))
+        pygame.display.update()
+
+
+def selectShip(win, player):
     mouse = pygame.mouse.get_pos()
     click = pygame.mouse.get_pressed()
 
+    x = 1400
+    y = 675
+    
     if click[0] == 1:
         #Bouton 5
         if 1400 <= mouse[0] <= 1440 and 400 <= mouse[1] <= 600:
@@ -246,24 +261,37 @@ def selectShipClick(win, player):
             return player.ship[0]
 
 
-def selectWeaponClick(player, mouse, click, selectedShip):
-    if 1628 <= mouse[0] <= 1710 and 675 <= mouse[1] <= 755:
-        if click[0] == 1:
-            if selectedShip is not None:
-                print("Arme 1 sélectionnée")
-                return player.weapon[0]
-            else:
-                print("Aucun bateau sélectionné pour choisir une arme")
+weaponSelected = False
 
-    # selection arme 2
-    if 1628 <= mouse[0] <= 1710 and 775 <= mouse[1] <= 855:
-        if click[0] == 1:
-            if selectedShip is not None:
-                print("Arme 2 sélectionnée")
-                return player.weapon[1]
-            else:
-                print("Aucun bateau sélectionné pour choisir une arme")
+def selectWeaponClick(player):
+    weaponSelected = False
 
+    while not weaponSelected:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                mouse = pygame.mouse.get_pos()
+                click = pygame.mouse.get_pressed()
+
+                if 1628 <= mouse[0] <= 1710 and 775 <= mouse[1] <= 855:
+                    if click[0] == 1:
+                        print("Weapon 1 selected")
+                        weaponSelected = True
+                        return player.weapon[0]
+                
+                if 1628 <= mouse[0] <= 1710 and 875 <= mouse[1] <= 955:
+                    if click[0] == 1:
+                        print("Weapon 2 selected")
+                        weaponSelected = True
+                        return player.weapon[1]
+                
+
+
+
+weapon_selected = False
 
 def chooseActions(win, m, player, selectedShip, p1, p2, mouse, click):
     # mouse = pygame.mouse.get_pos()
@@ -276,7 +304,6 @@ def chooseActions(win, m, player, selectedShip, p1, p2, mouse, click):
     if 1340 <= mouse[0] <= 1420 and 675 <= mouse[1] <= 755:
         if click[0] == 1:
             if selectedShip is not None:
-            
                 #afficher un rectagle blanc pour cacher le playerPA
                 pygame.draw.rect(win, (242, 251, 255), (1445, 20+15+180+45+58, 25, 30))
 
@@ -311,7 +338,6 @@ def chooseActions(win, m, player, selectedShip, p1, p2, mouse, click):
 
                     #On change sa direction et on le replace
                     selectedShip.direction = nextShipDirection
-                    print("Placement apres rotation")
                     if(placeShip(selectedShip,m.matrix) == "victoire"):
                         print(placeShip(selectedShip,m.matrix), "ICI")
                         return "victoire"
@@ -343,7 +369,6 @@ def chooseActions(win, m, player, selectedShip, p1, p2, mouse, click):
 
                     #On change sa direction et on le replace
                     selectedShip.direction = nextShipDirection
-                    print("Placement apres rotation")
                     if(placeShip(selectedShip,m.matrix) == "victoire"):
                         print(placeShip(selectedShip,m.matrix), "ICI")
                         return "victoire"
@@ -380,52 +405,32 @@ def chooseActions(win, m, player, selectedShip, p1, p2, mouse, click):
                 print("Aucun bateau sélectionné pour reculer")
 
     #Bouton Tirer
-    # if 1630 <= mouse[0] <= 1710 and 875 <= mouse[1] <= 955:
-    #     if click[0] == 1:
-    #         if selectedShip is not None:
-    #             print("tirer")
-
-    #             while not weapon_selected:
-    #                 w = selectWeapon(player, mouse, click, selectedShip)
-    #                 if w is not None:
-    #                     shipAttacked = Shoot(selectedShip, w, selectedShip.direction, m, p1, p2)
-    #                     print("shipAttacked size : ", shipAttacked.size)
-    #                     print("shipAttacked health : ", shipAttacked.health)
-
-    #                     shootRocket(win, m, selectedShip, shipAttacked)
-
-    #                     if(checkWinByOponentShip(m, p1)):
-    #                         return "victoire"
-    #                     player.set_action(player.action - 2)
-
-    #                     pygame.display.update()
-    #                     selectedShip = None
-    #                     weapon_selected = True 
-    #         else:
-    #             print("Aucun bateau sélectionné pour tirer")
-
-    #Bouton Tirer
-    if 1630 <= mouse[0] <= 1710 and 875 <= mouse[1] <= 955:
+    if 1630 <= mouse[0] <= 1710 and 675 <= mouse[1] <= 755:
         if click[0] == 1:
             if selectedShip is not None:
                 print("tirer")
-            
-                w = selectWeapon(p1)
-                shipAttacked = Shoot(selectedShip, w, selectedShip.direction, m, p1, p2)
-                print("shipAttacked size : ", shipAttacked.size)
-                print("shipAttacked health : ", shipAttacked.health)
 
-                shootRocket(win, m, selectedShip, shipAttacked)
+                if not weapon_selected:
+                    w = selectWeaponClick(player)
+                    if w is not None:
+                        weapon_selected = True
+                        
+                if w is not None:
+                    
+                    shipAttacked = Shoot(selectedShip, w, m, p1, p2)
 
-                if(checkWinByOponentShip(m, p1)):
-                    return "victoire"
-                player.set_action(player.action - 2)
+                    if shipAttacked is not None:
+                        shootRocket(win, m, selectedShip, shipAttacked, w.id)
 
-                pygame.display.update()
-                selectedShip = None
+                        if(checkWinByOponentShip(m, p1)):
+                            return "victoire"
+                        player.set_action(player.action - 2)
+
+                        pygame.display.update()
+                        selectedShip = None
+                    else:
+                        print("Aucun bateau à attaquer")
+                        
+                        
             else:
                 print("Aucun bateau sélectionné pour tirer")
-
-
-            
-

@@ -21,14 +21,13 @@ m, p1, p2 = loadGame(size)
 #Attribution de leurs id
 p1.set_id(1)
 p2.set_id(2)
-# print(p1.name + " dont l'id est: ", p1.get_id())
-# print(p2.name + " dont l'id est: ", p2.get_id())
 
 running = True
 turn = 0
 player = whoPlays(turn, p1, p2)
 
 ship_selected = False
+selected_ship = None
 victoire = ''
 
 while running:
@@ -56,9 +55,11 @@ while running:
     # Déplacement du bateau
     if not ship_selected:
         # on selectionne un bateau
-        selected_ship = selectShipClick(win, player)
+        selected_ship = selectShip(win, player)
         if selected_ship is not None:
             ship_selected = True
+
+    drawShipsSelection(player, selected_ship)
 
     # Choix de l'action
     if ship_selected:
@@ -76,8 +77,7 @@ while running:
         player = whoPlays(turn, p1, p2)
         player.action = 5
         ship_selected = False
-
-    selectedShip = None  # Réinitialiser la valeur de selectedShip à chaque tour de boucle
+        selectedShip = None  # Réinitialiser la valeur de selectedShip à chaque tour de boucle
 
 victoryRunning = True
 
@@ -91,9 +91,3 @@ if victoire == "victoire":
         victory(player)
         
 pygame.quit()
-
-
-#TODO:
-# - faire en sorte que le joueur puisse choisir un weapon en cliquant dessus (pour l'instant c'est avec le terminale
-# - faire mieux apparaitre le bateau sélectionné par le joueur (carré rouge autour)
-# - faire un meilleur README

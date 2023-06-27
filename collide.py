@@ -129,8 +129,6 @@ def willCollideRotation(ship,nextShipDirection,map, opponentBase):
 
     #Pivot autour du back du bateau donc si longueur de trois vers Est et rotation à gauche, check 3 - 1 = 2 case au dessus du back
     for i in range (size - 1):
-
-        print(i)
         #On check la case devant
         match nextShipDirection:
             case 'E':
