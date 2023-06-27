@@ -20,6 +20,7 @@ pygame.init()
 delay = 200  # Délai en millisecondes
 last_update = pygame.time.get_ticks()  # Temps du dernier déplacement de la roquette
 
+global getSelectWeapon
 
 def drawShips(win, square_size, margin, space_size, player):
     if player.get_id() == 1:
@@ -227,10 +228,13 @@ def shootRocket(win, m, selectedShip, shipAttacked, weapon_selected):
         pygame.display.update()
 
 
-def selectShipClick(win, player):
+def selectShip(win, player):
     mouse = pygame.mouse.get_pos()
     click = pygame.mouse.get_pressed()
 
+    x = 1400
+    y = 675
+    
     if click[0] == 1:
         #Bouton 5
         if 1400 <= mouse[0] <= 1440 and 400 <= mouse[1] <= 600:
@@ -259,7 +263,7 @@ def selectShipClick(win, player):
 
 weaponSelected = False
 
-def selectWeaponClick(player, selectedShip):
+def selectWeaponClick(player):
     weaponSelected = False
 
     while not weaponSelected:
@@ -300,7 +304,6 @@ def chooseActions(win, m, player, selectedShip, p1, p2, mouse, click):
     if 1340 <= mouse[0] <= 1420 and 675 <= mouse[1] <= 755:
         if click[0] == 1:
             if selectedShip is not None:
-            
                 #afficher un rectagle blanc pour cacher le playerPA
                 pygame.draw.rect(win, (242, 251, 255), (1445, 20+15+180+45+58, 25, 30))
 
@@ -408,7 +411,7 @@ def chooseActions(win, m, player, selectedShip, p1, p2, mouse, click):
                 print("tirer")
 
                 if not weapon_selected:
-                    w = selectWeaponClick(player, selectedShip)
+                    w = selectWeaponClick(player)
                     if w is not None:
                         weapon_selected = True
                         

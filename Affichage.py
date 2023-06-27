@@ -84,7 +84,7 @@ def initWindow():
     return player1.name, player2.name
 
 
-def drawShipsSelection(player):
+def drawShipsSelection(player, selected_ship):
     #Affichier les bateaux du joueur alignés l'ordre de taille
 
     colorP1 = (224, 90, 12)
@@ -99,7 +99,10 @@ def drawShipsSelection(player):
 
     for ship in player.ship:
         ###### Affichage du bateau de taille 5 ######
-        BoatImg_5 = pygame.image.load("./assets/shipsImg/" + boatName + "5.png")
+        if selected_ship is not None and selected_ship != player.ship[3]:
+            BoatImg_5 = pygame.image.load("./assets/unselected/" + boatName + "5_unselected.png")
+        else:
+            BoatImg_5 = pygame.image.load("./assets/shipsImg/" + boatName + "5.png")
         BoatImg_5 = pygame.transform.scale(BoatImg_5, (40, 200))
 
         #point de vie du bateau
@@ -119,7 +122,10 @@ def drawShipsSelection(player):
 
 
         ###### Affichage du bateau de taille 4 ######
-        BoatImg_4 = pygame.image.load("./assets/shipsImg/" + boatName + "4.png")
+        if selected_ship is not None and selected_ship != player.ship[2]:
+            BoatImg_4 = pygame.image.load("./assets/unselected/" + boatName + "4_unselected.png")
+        else:
+            BoatImg_4 = pygame.image.load("./assets/shipsImg/" + boatName + "4.png")
         BoatImg_4 = pygame.transform.scale(BoatImg_4, (40, 160))
 
         #point de vie du bateau
@@ -139,7 +145,10 @@ def drawShipsSelection(player):
         
 
         ###### Affichage du bateau de taille 3 ######
-        BoatImg_3 = pygame.image.load("./assets/shipsImg/" + boatName + "3.png")
+        if selected_ship is not None and selected_ship != player.ship[1]:
+            BoatImg_3 = pygame.image.load("./assets/unselected/" + boatName + "3_unselected.png")
+        else:
+            BoatImg_3 = pygame.image.load("./assets/shipsImg/" + boatName + "3.png")
         BoatImg_3 = pygame.transform.scale(BoatImg_3, (40, 120))
 
         #point de vie du bateau
@@ -164,7 +173,10 @@ def drawShipsSelection(player):
 
 
         ###### Affichage du bateau de taille 2 ######
-        BoatImg_2 = pygame.image.load("./assets/shipsImg/" + boatName + "2.png")
+        if selected_ship is not None and selected_ship != player.ship[0]:
+            BoatImg_2 = pygame.image.load("./assets/unselected/" + boatName + "2_unselected.png")
+        else:
+            BoatImg_2 = pygame.image.load("./assets/shipsImg/" + boatName + "2.png")
         BoatImg_2 = pygame.transform.scale(BoatImg_2, (40, 80))
 
         #point de vie du bateau
@@ -188,6 +200,7 @@ def drawShipsSelection(player):
         win.blit(BoatImg_4, (x + 60, y + 200 - 160))
         win.blit(BoatImg_3, (x + 60 + 60, y + 200 - 120))
         win.blit(BoatImg_2, (x + 60 + 60 + 60, y + 200 - 80))
+
 
 
 def drawMoveButton():
@@ -273,7 +286,7 @@ def drawInfosZone(player):
     pygame.draw.rect(win, color, (1645, 20 + 15 + 180 + 45 + 55, 180, 40), 2, border_radius=10)
 
 
-    drawShipsSelection(player)  
+    drawShipsSelection(player, None)  
     drawMoveButton()   
     drawWeapon()
 
