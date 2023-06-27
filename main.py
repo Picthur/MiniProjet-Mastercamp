@@ -21,8 +21,6 @@ m, p1, p2 = loadGame(size)
 #Attribution de leurs id
 p1.set_id(1)
 p2.set_id(2)
-# print(p1.name + " dont l'id est: ", p1.get_id())
-# print(p2.name + " dont l'id est: ", p2.get_id())
 
 running = True
 turn = 0

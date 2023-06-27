@@ -5,7 +5,7 @@ from gameAction import *
 from ClassPlayer import *
 from ClassShip import *
 from ClassWeapon import *
-from base import *
+from Classbase import *
 from ClassMap import *
 
 
@@ -81,10 +81,8 @@ def initWindow():
     player1 = playerName(1)
     player2 = playerName(2)
     
-    print("name1: ", player1.name + " dont l'id est: ", player1.get_id())
-    print("name2: ", player2.name + " dont l'id est: ", player2.get_id())
-
     return player1.name, player2.name
+
 
 def drawShipsSelection(player):
     #Affichier les bateaux du joueur alignés l'ordre de taille
@@ -211,17 +209,17 @@ def drawMoveButton():
 
 
 def drawWeapon():
+    TirerIcon = pygame.image.load("./assets/TirerIcon.png")
+    TirerIcon = pygame.transform.scale(TirerIcon, (80, 80))
+    win.blit(TirerIcon, (1630, 675))
+
     Weapon1Icon = pygame.image.load("./assets/Weapon1.png")
     Weapon1Icon = pygame.transform.scale(Weapon1Icon, (80, 80))
-    win.blit(Weapon1Icon, (1628, 675))
+    win.blit(Weapon1Icon, (1628, 775))
 
     Weapon2Icon = pygame.image.load("./assets/Weapon2.png")
     Weapon2Icon = pygame.transform.scale(Weapon2Icon, (80, 80))
-    win.blit(Weapon2Icon, (1628, 775))
-
-    TirerIcon = pygame.image.load("./assets/TirerIcon.png")
-    TirerIcon = pygame.transform.scale(TirerIcon, (80, 80))
-    win.blit(TirerIcon, (1630, 875))
+    win.blit(Weapon2Icon, (1628, 875))
 
 
 def drawInfosZone(player):

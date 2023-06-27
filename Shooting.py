@@ -2,7 +2,7 @@ from collide import *
 from placement import *
 from ClassMap import *
 from ClassPlayer import *
-from base import *
+from Classbase import *
 from ClassShip import *
 from gameAction import *
 
@@ -16,9 +16,7 @@ def findPlayer(s: Ship, p1: Player, p2: Player):
     # Fonction pour faire baisser les PV du bateau attaqué en fonction des degats de l'arme attaquante
     # Si le bateau a plus de PV, il est détruit et enlever des class Player
 def Attacked(s: Ship, w:Weapon, m: Map, p1: Player, p2: Player):
-    print(s.health)
     s.health -= w.damages
-    print(s.health)
     if(s.health <= 0):
         p = findPlayer(s, p1, p2)
         eraseShip(s, m.matrix)
@@ -40,7 +38,7 @@ def coordShooting(s: Ship):
             case "S":
                 coordX = s.row + (s.size-1)
                 coordY = s.col
-            case "O":
+            case "W":
                 coordX = s.row
                 coordY = s.col - (s.size-1)
         return coordX, coordY
@@ -60,27 +58,25 @@ def reconizeObject(m: map,coordX: int, coordY: int):
 
 
     #FAIRE UNE FONCTION POUR RETROUVER UN BATEAU EN FONCTION DES COORDONNEES
-def Shoot(s: Ship, w: Weapon, way, m: Map, p1: Player, p2: Player):
+def Shoot(s: Ship, w: Weapon, m: Map, p1: Player, p2: Player):
         
         #Coordonnée du front du bateau
         coordX = coordShooting(s)[0]
         coordY = coordShooting(s)[1]
 
-        match way:
+        match s.direction:
             case "N":
                 for i in range(w.range+1):
                     if(coordX - i >= 0):
                         if(m.matrix[coordX - (i+1)][coordY] != "* "):
                             ship = reconizeObject(m,coordX - (i+1), coordY)
                             if(ship != None):
-                                print("les coordonnées du bateau attaqué ", coordShooting(ship))
-                                print("TOUCHE!")
+                                print("TOUCHE! par le bateau n°", s.id)
                                 Attacked(ship, w, m, p1, p2)
                                 return ship
                         else:
                             if(m.matrix[coordX - (i)][coordY] == "* "):
                                 m.matrix[coordX - (i)][coordY] = "M "
-                            m.displayMap()
                             if(m.matrix[coordX - (i)][coordY] == "M "):
                                 m.matrix[coordX - (i)][coordY] = "* "
                     else:
@@ -109,33 +105,33 @@ def Shoot(s: Ship, w: Weapon, way, m: Map, p1: Player, p2: Player):
                         if(m.matrix[coordX + (i+1)][coordY] != "* "):
                             ship = reconizeObject(m, coordX + (i+1), coordY)
                             if(ship != None):
-                                print(f"TOUCHE! {s.id}")
+                                print(f"TOUCHE! par le bateau n°{s.id}")
                                 Attacked(ship, w, m, p1, p2)
                                 return ship
                         else:
                             if(m.matrix[coordX + (i)][coordY] == "* "):
                                 m.matrix[coordX + (i)][coordY] = "M "
-                            m.displayMap()
                             if(m.matrix[coordX + (i)][coordY] == "M "):
                                 m.matrix[coordX + (i)][coordY] = "* "
                     else:
+                        print("fin du tir")
                         break
-            case "O":
+            case "W":
                 for i in range(w.range+1):
                     if(coordY - i >= 0):
                         if(m.matrix[coordX][coordY - (i+1)] != "* "):
                             ship = reconizeObject(m, coordX, coordY - (i+1))
                             if(ship != None):
-                                print(f"TOUCHE! {s.id}")
+                                print(f"TOUCHE! par le bateau n°{s.id}")
                                 Attacked(ship, w, m, p1, p2)
                                 return ship
                         else:
                             if(m.matrix[coordX][coordY - (i)] == "* "):
                                 m.matrix[coordX][coordY - (i)] = "M "
-                            m.displayMap()
                             if(m.matrix[coordX][coordY - (i)] == "M "):
                                 m.matrix[coordX][coordY - (i)] = "* "
                     else:
+                        print("fin du tir")
                         break
 
 
