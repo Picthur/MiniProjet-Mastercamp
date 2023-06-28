@@ -102,6 +102,10 @@ def drawMap(win, m1, size, p1, p2):
     
 
 def shootRocket(win, m, selectedShip, shipAttacked, weapon_selected):
+    print("selectedShip.direction = ", selectedShip.direction)
+    print("shipAttacked.direction = ", shipAttacked.direction)
+    print("weapon_selected = ", weapon_selected)
+    print()
     MapZoneSize = 1020
 
     # Calcul des dimensions des carrés et de l'espace entre eux
@@ -111,14 +115,10 @@ def shootRocket(win, m, selectedShip, shipAttacked, weapon_selected):
 
     waitTime = 300
     
-    if weapon_selected == 0:
+    if weapon_selected%2== 0:
         rocketImg = pygame.image.load("./assets/Weapon1.png")
-    elif weapon_selected == 1:
+    elif weapon_selected%2 == 1:
         rocketImg = pygame.image.load("./assets/Weapon2.png")
-
-    print("selectedShip.direction = ", selectedShip.direction)
-    print("weapon_selected = ", weapon_selected)
-    print()
     
     if selectedShip is not None and shipAttacked is not None:
         rocketImg = pygame.transform.scale(rocketImg, (square_size+square_size/3, square_size + space_size * 2))
@@ -161,6 +161,7 @@ def shootRocket(win, m, selectedShip, shipAttacked, weapon_selected):
                     pygame.draw.rect(win, (242, 251, 255), (prev_x-space_size, prev_y-space_size, square_size+2*space_size, square_size+2*space_size))
                     pygame.draw.rect(win, (12, 171, 232), (prev_x, prev_y, square_size, square_size))
                     pygame.display.update()
+
                 
                 # permet de faire une pause entre chaque déplacement de la roquette
                 x += square_size + space_size
@@ -170,27 +171,26 @@ def shootRocket(win, m, selectedShip, shipAttacked, weapon_selected):
 
         elif selectedShip.direction == 'W':
             rocketImg = pygame.transform.rotate(rocketImg, 90)
-            x = 80 + margin + space_size + (selectedShip.col - selectedShip.size) * (square_size + space_size) - square_size - space_size
+            x = 80 + margin + space_size + selectedShip.col * (square_size + space_size) - (square_size + space_size) * selectedShip.size+1
             y = 20 + margin + space_size + selectedShip.row * (square_size + space_size)
 
 
             if shipAttacked.direction == 'N' or shipAttacked.direction == 'S':
-                rangeRocket = selectedShip.col - shipAttacked.col - 1
+                rangeRocket = selectedShip.col - shipAttacked.col
             elif shipAttacked.direction == 'E' or shipAttacked.direction == 'W':
                 rangeRocket = selectedShip.col - shipAttacked.col - shipAttacked.size
 
             # Déplacer la roquette jusuq'à la case du bateau attaqué            
-            for i in range(rangeRocket-1):
-                print("i = ", i)
+            for i in range(rangeRocket-3):
                 # Effacer la roquette de la case précédente
-                if x > 80 + margin + space_size + selectedShip.col * (square_size + space_size) + (square_size + space_size) * selectedShip.size:
-                    prev_x = x - (square_size + space_size)
+                if x > 80 + margin + space_size + selectedShip.col * (square_size + space_size) - (square_size + space_size) * selectedShip.size:
+                    prev_x = x + (square_size + space_size)
                     prev_y = y
                     pygame.draw.rect(win, (242, 251, 255), (prev_x-space_size, prev_y-space_size, square_size+2*space_size, square_size+2*space_size))
                     pygame.draw.rect(win, (12, 171, 232), (prev_x, prev_y, square_size, square_size))
                     pygame.display.update()
 
-                x -= square_size + space_size
+                x -= (square_size + space_size)
                 win.blit(rocketImg, (x, y))
                 pygame.display.update()
                 pygame.time.wait(waitTime)
@@ -240,25 +240,38 @@ def selectShip(win, player):
         if 1400 <= mouse[0] <= 1440 and 400 <= mouse[1] <= 600:
             #retourner le bateau dont la taille est 5
             print("Bateau de taille 5 sélectionné")
-            return player.ship[3]
+            for ship in player.ship:
+                if ((ship.id-1) %4 == 3):
+                    print(ship.id)
+                    return ship
             
         #Bouton 4
         if 1460 <= mouse[0] <= 1500 and 440 <= mouse[1] <= 600:
             #retourner le bateau dont la taille est 4
             print("Bateau de taille 4 sélectionné")
-            return player.ship[2]
+            for ship in player.ship:
+                if ((ship.id-1) %4 == 2):
+                    print(ship.id)
+                    return ship
             
         #Bouton 3
         if 1520 <= mouse[0] <= 1560 and 460 <= mouse[1] <= 600:
             #retourner le bateau dont la taille est 3
             print("Bateau de taille 3 sélectionné")
-            return player.ship[1]
+            for ship in player.ship:
+                if ((ship.id-1) %4 == 1):
+                    print(ship.id)
+                    return ship
+
             
         #Bouton 2
         if 1580 <= mouse[0] <= 1620 and 520 <= mouse[1] <= 600:
             #retourner le bateau dont la taille est 2
             print("Bateau de taille 2 sélectionné")
-            return player.ship[0]
+            for ship in player.ship:
+                if ((ship.id-1) %4 == 0):
+                    print(ship.id)
+                    return ship
 
 
 weaponSelected = False
@@ -275,18 +288,18 @@ def selectWeaponClick(player):
             if event.type == pygame.MOUSEBUTTONDOWN:
                 mouse = pygame.mouse.get_pos()
                 click = pygame.mouse.get_pressed()
-
-                if 1628 <= mouse[0] <= 1710 and 775 <= mouse[1] <= 855:
-                    if click[0] == 1:
-                        print("Weapon 1 selected")
-                        weaponSelected = True
-                        return player.weapon[0]
                 
-                if 1628 <= mouse[0] <= 1710 and 875 <= mouse[1] <= 955:
-                    if click[0] == 1:
-                        print("Weapon 2 selected")
-                        weaponSelected = True
-                        return player.weapon[1]
+                if click[0] == 1:
+                    if 1628 <= mouse[0] <= 1710 and 775 <= mouse[1] <= 855:
+                        
+                            print("Weapon 1 selected")
+                            weaponSelected = True
+                            return player.weapon[0]
+                    
+                    if 1628 <= mouse[0] <= 1710 and 875 <= mouse[1] <= 955:
+                            print("Weapon 2 selected")
+                            weaponSelected = True
+                            return player.weapon[1]
                 
 
 
@@ -300,9 +313,9 @@ def chooseActions(win, m, player, selectedShip, p1, p2, mouse, click):
     opponentBase = "B" + str(player.id %2 +1)
     weapon_selected = False
 
-    #Bouton Avancé
-    if 1340 <= mouse[0] <= 1420 and 675 <= mouse[1] <= 755:
-        if click[0] == 1:
+    if click[0] == 1:
+        #Bouton Avancé
+        if 1340 <= mouse[0] <= 1420 and 675 <= mouse[1] <= 755:
             if selectedShip is not None:
                 #afficher un rectagle blanc pour cacher le playerPA
                 pygame.draw.rect(win, (242, 251, 255), (1445, 20+15+180+45+58, 25, 30))
@@ -321,9 +334,8 @@ def chooseActions(win, m, player, selectedShip, p1, p2, mouse, click):
             else:
                 print("Aucun bateau sélectionné pour avancer")
 
-    #Bouton Tourner gauche
-    if 1290 <= mouse[0] <= 1370 and 775 <= mouse[1] <= 855:
-        if click[0] == 1:
+        #Bouton Tourner gauche
+        if 1290 <= mouse[0] <= 1370 and 775 <= mouse[1] <= 855:
             if selectedShip is not None:
                 #afficher un rectagle blanc pour cacher le playerPA
                 pygame.draw.rect(win, (242, 251, 255), (1445, 20+15+180+45+58, 25, 30))
@@ -352,9 +364,8 @@ def chooseActions(win, m, player, selectedShip, p1, p2, mouse, click):
             else:
                 print("Aucun bateau sélectionné pour tourner")
 
-    #Bouton Tourner droite
-    if 1390 <= mouse[0] <= 1470 and 775 <= mouse[1] <= 855:
-        if click[0] == 1:
+        #Bouton Tourner droite
+        if 1390 <= mouse[0] <= 1470 and 775 <= mouse[1] <= 855:
             if selectedShip is not None:
                 #afficher un rectagle blanc pour cacher le playerPA
                 pygame.draw.rect(win, (242, 251, 255), (1445, 20+15+180+45+58, 25, 30))
@@ -384,10 +395,9 @@ def chooseActions(win, m, player, selectedShip, p1, p2, mouse, click):
                 print("Aucun bateau sélectionné pour tourner")
 
 
-    #Bouton Reculer
-    if 1340 <= mouse[0] <= 1420 and 875 <= mouse[1] <= 955:
-        if click[0] == 1:
-
+        #Bouton Reculer
+        if 1340 <= mouse[0] <= 1420 and 875 <= mouse[1] <= 955:
+            
             if selectedShip is not None:
                 #afficher un rectagle blanc pour cacher le playerPA
                 pygame.draw.rect(win, (242, 251, 255), (1445, 20+15+180+45+58, 25, 30))
@@ -404,9 +414,8 @@ def chooseActions(win, m, player, selectedShip, p1, p2, mouse, click):
             else:
                 print("Aucun bateau sélectionné pour reculer")
 
-    #Bouton Tirer
-    if 1630 <= mouse[0] <= 1710 and 675 <= mouse[1] <= 755:
-        if click[0] == 1:
+        #Bouton Tirer
+        if 1630 <= mouse[0] <= 1710 and 675 <= mouse[1] <= 755:
             if selectedShip is not None:
                 print("tirer")
 

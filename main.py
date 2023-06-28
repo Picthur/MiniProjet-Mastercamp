@@ -15,7 +15,7 @@ def drawAll(player):
     drawMapZone()
     drawMap(win, m, size, p1, p2)
 
-size = 31
+size = 41
 m, p1, p2 = loadGame(size)
 
 #Attribution de leurs id

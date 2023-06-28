@@ -99,7 +99,7 @@ def drawShipsSelection(player, selected_ship):
 
     for ship in player.ship:
         ###### Affichage du bateau de taille 5 ######
-        if selected_ship is not None and selected_ship != player.ship[3]:
+        if selected_ship is not None and selected_ship.size != 5:
             BoatImg_5 = pygame.image.load("./assets/unselected/" + boatName + "5_unselected.png")
         else:
             BoatImg_5 = pygame.image.load("./assets/shipsImg/" + boatName + "5.png")
@@ -122,7 +122,7 @@ def drawShipsSelection(player, selected_ship):
 
 
         ###### Affichage du bateau de taille 4 ######
-        if selected_ship is not None and selected_ship != player.ship[2]:
+        if selected_ship is not None and selected_ship.size != 4:
             BoatImg_4 = pygame.image.load("./assets/unselected/" + boatName + "4_unselected.png")
         else:
             BoatImg_4 = pygame.image.load("./assets/shipsImg/" + boatName + "4.png")
@@ -145,7 +145,7 @@ def drawShipsSelection(player, selected_ship):
         
 
         ###### Affichage du bateau de taille 3 ######
-        if selected_ship is not None and selected_ship != player.ship[1]:
+        if selected_ship is not None and selected_ship.size != 3:
             BoatImg_3 = pygame.image.load("./assets/unselected/" + boatName + "3_unselected.png")
         else:
             BoatImg_3 = pygame.image.load("./assets/shipsImg/" + boatName + "3.png")
@@ -173,7 +173,7 @@ def drawShipsSelection(player, selected_ship):
 
 
         ###### Affichage du bateau de taille 2 ######
-        if selected_ship is not None and selected_ship != player.ship[0]:
+        if selected_ship is not None and selected_ship.size != 2:
             BoatImg_2 = pygame.image.load("./assets/unselected/" + boatName + "2_unselected.png")
         else:
             BoatImg_2 = pygame.image.load("./assets/shipsImg/" + boatName + "2.png")
@@ -323,13 +323,6 @@ def victory(player):
     QuitText = pygame.transform.scale(QuitText, (130, 30))
     win.blit(QuitText, (915, 900))
     pygame.draw.rect(win, (255, 255, 255), (900, 900 - 5, 180, 40), 2, border_radius=10)
-    
-# mouse = pygame.mouse.get_pos()
-# click = pygame.mouse.get_pressed()
-
-# if 1645 <= mouse[0] <= 1645 + 180 and 20 + 15 + 180 + 45 + 58 <= mouse[1] <= 20 + 15 + 180 + 45 + 58 + 40:
-#     if click[0] == 1:
-#         return False
         
     pygame.display.update()
 

@@ -47,7 +47,7 @@ class Player():
 
     
     def initializeWeapon(self):
-        w1 = Weapon(10, 10, 20)
-        w2 = Weapon(2, 5, 20)
+        w1 = Weapon(10, 5, 20)
+        w2 = Weapon(1, 5, 10)
         self.addWeapon(w1)
         self.addWeapon(w2)

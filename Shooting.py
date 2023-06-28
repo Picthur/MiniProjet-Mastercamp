@@ -8,7 +8,7 @@ from gameAction import *
 
 
 def findPlayer(s: Ship, p1: Player, p2: Player):
-    if(s.id > 5):
+    if(s.id >= 5):
         return p2
     else:
         return p1
@@ -22,6 +22,8 @@ def Attacked(s: Ship, w:Weapon, m: Map, p1: Player, p2: Player):
         eraseShip(s, m.matrix)
         p.removeShip(s)
         m.removeShipMap(s)
+        s.health = 0
+
         
 
 
