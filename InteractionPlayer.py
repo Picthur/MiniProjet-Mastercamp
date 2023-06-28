@@ -102,6 +102,10 @@ def drawMap(win, m1, size, p1, p2):
     
 
 def shootRocket(win, m, selectedShip, shipAttacked, weapon_selected):
+    print("selectedShip.direction = ", selectedShip.direction)
+    print("shipAttacked.direction = ", shipAttacked.direction)
+    print("weapon_selected = ", weapon_selected)
+    print()
     MapZoneSize = 1020
 
     # Calcul des dimensions des carrés et de l'espace entre eux
@@ -111,14 +115,10 @@ def shootRocket(win, m, selectedShip, shipAttacked, weapon_selected):
 
     waitTime = 300
     
-    if weapon_selected == 0:
+    if weapon_selected%2== 0:
         rocketImg = pygame.image.load("./assets/Weapon1.png")
-    elif weapon_selected == 1:
+    elif weapon_selected%2 == 1:
         rocketImg = pygame.image.load("./assets/Weapon2.png")
-
-    print("selectedShip.direction = ", selectedShip.direction)
-    print("weapon_selected = ", weapon_selected)
-    print()
     
     if selectedShip is not None and shipAttacked is not None:
         rocketImg = pygame.transform.scale(rocketImg, (square_size+square_size/3, square_size + space_size * 2))
@@ -161,6 +161,7 @@ def shootRocket(win, m, selectedShip, shipAttacked, weapon_selected):
                     pygame.draw.rect(win, (242, 251, 255), (prev_x-space_size, prev_y-space_size, square_size+2*space_size, square_size+2*space_size))
                     pygame.draw.rect(win, (12, 171, 232), (prev_x, prev_y, square_size, square_size))
                     pygame.display.update()
+
                 
                 # permet de faire une pause entre chaque déplacement de la roquette
                 x += square_size + space_size
@@ -170,27 +171,26 @@ def shootRocket(win, m, selectedShip, shipAttacked, weapon_selected):
 
         elif selectedShip.direction == 'W':
             rocketImg = pygame.transform.rotate(rocketImg, 90)
-            x = 80 + margin + space_size + (selectedShip.col - selectedShip.size) * (square_size + space_size) - square_size - space_size
+            x = 80 + margin + space_size + selectedShip.col * (square_size + space_size) - (square_size + space_size) * selectedShip.size+1
             y = 20 + margin + space_size + selectedShip.row * (square_size + space_size)
 
 
             if shipAttacked.direction == 'N' or shipAttacked.direction == 'S':
-                rangeRocket = selectedShip.col - shipAttacked.col - 1
+                rangeRocket = selectedShip.col - shipAttacked.col
             elif shipAttacked.direction == 'E' or shipAttacked.direction == 'W':
                 rangeRocket = selectedShip.col - shipAttacked.col - shipAttacked.size
 
             # Déplacer la roquette jusuq'à la case du bateau attaqué            
-            for i in range(rangeRocket-1):
-                print("i = ", i)
+            for i in range(rangeRocket-3):
                 # Effacer la roquette de la case précédente
-                if x > 80 + margin + space_size + selectedShip.col * (square_size + space_size) + (square_size + space_size) * selectedShip.size:
-                    prev_x = x - (square_size + space_size)
+                if x > 80 + margin + space_size + selectedShip.col * (square_size + space_size) - (square_size + space_size) * selectedShip.size:
+                    prev_x = x + (square_size + space_size)
                     prev_y = y
                     pygame.draw.rect(win, (242, 251, 255), (prev_x-space_size, prev_y-space_size, square_size+2*space_size, square_size+2*space_size))
                     pygame.draw.rect(win, (12, 171, 232), (prev_x, prev_y, square_size, square_size))
                     pygame.display.update()
 
-                x -= square_size + space_size
+                x -= (square_size + space_size)
                 win.blit(rocketImg, (x, y))
                 pygame.display.update()
                 pygame.time.wait(waitTime)
