@@ -240,25 +240,38 @@ def selectShip(win, player):
         if 1400 <= mouse[0] <= 1440 and 400 <= mouse[1] <= 600:
             #retourner le bateau dont la taille est 5
             print("Bateau de taille 5 sélectionné")
-            return player.ship[3]
+            for ship in player.ship:
+                if ((ship.id-1) %4 == 3):
+                    print(ship.id)
+                    return ship
             
         #Bouton 4
         if 1460 <= mouse[0] <= 1500 and 440 <= mouse[1] <= 600:
             #retourner le bateau dont la taille est 4
             print("Bateau de taille 4 sélectionné")
-            return player.ship[2]
+            for ship in player.ship:
+                if ((ship.id-1) %4 == 2):
+                    print(ship.id)
+                    return ship
             
         #Bouton 3
         if 1520 <= mouse[0] <= 1560 and 460 <= mouse[1] <= 600:
             #retourner le bateau dont la taille est 3
             print("Bateau de taille 3 sélectionné")
-            return player.ship[1]
+            for ship in player.ship:
+                if ((ship.id-1) %4 == 1):
+                    print(ship.id)
+                    return ship
+
             
         #Bouton 2
         if 1580 <= mouse[0] <= 1620 and 520 <= mouse[1] <= 600:
             #retourner le bateau dont la taille est 2
             print("Bateau de taille 2 sélectionné")
-            return player.ship[0]
+            for ship in player.ship:
+                if ((ship.id-1) %4 == 0):
+                    print(ship.id)
+                    return ship
 
 
 weaponSelected = False

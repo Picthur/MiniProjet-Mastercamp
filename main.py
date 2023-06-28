@@ -9,9 +9,9 @@ from ClassPlayer import *
 
 window_initialized = False
 
-def drawAll(player, p1, p2):
+def drawAll(player):
     win.fill((242, 251, 255))
-    drawInfosZone(player, p1, p2)
+    drawInfosZone(player)
     drawMapZone()
     drawMap(win, m, size, p1, p2)
 
@@ -42,7 +42,7 @@ while running:
         window_initialized = True
 
     # Affichage de la fenêtre de jeu
-    drawAll(player, p1, p2)
+    drawAll(player)
     
     # Passer le tour
     mouse = pygame.mouse.get_pos()
@@ -59,7 +59,7 @@ while running:
         if selected_ship is not None:
             ship_selected = True
 
-    drawShipsSelection(player, selected_ship, p1, p2)
+    drawShipsSelection(player, selected_ship)
 
     # Choix de l'action
     if ship_selected:
