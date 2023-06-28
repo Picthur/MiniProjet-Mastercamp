@@ -275,18 +275,18 @@ def selectWeaponClick(player):
             if event.type == pygame.MOUSEBUTTONDOWN:
                 mouse = pygame.mouse.get_pos()
                 click = pygame.mouse.get_pressed()
-
-                if 1628 <= mouse[0] <= 1710 and 775 <= mouse[1] <= 855:
-                    if click[0] == 1:
-                        print("Weapon 1 selected")
-                        weaponSelected = True
-                        return player.weapon[0]
                 
-                if 1628 <= mouse[0] <= 1710 and 875 <= mouse[1] <= 955:
-                    if click[0] == 1:
-                        print("Weapon 2 selected")
-                        weaponSelected = True
-                        return player.weapon[1]
+                if click[0] == 1:
+                    if 1628 <= mouse[0] <= 1710 and 775 <= mouse[1] <= 855:
+                        
+                            print("Weapon 1 selected")
+                            weaponSelected = True
+                            return player.weapon[0]
+                    
+                    if 1628 <= mouse[0] <= 1710 and 875 <= mouse[1] <= 955:
+                            print("Weapon 2 selected")
+                            weaponSelected = True
+                            return player.weapon[1]
                 
 
 
@@ -300,9 +300,9 @@ def chooseActions(win, m, player, selectedShip, p1, p2, mouse, click):
     opponentBase = "B" + str(player.id %2 +1)
     weapon_selected = False
 
-    #Bouton Avancé
-    if 1340 <= mouse[0] <= 1420 and 675 <= mouse[1] <= 755:
-        if click[0] == 1:
+    if click[0] == 1:
+        #Bouton Avancé
+        if 1340 <= mouse[0] <= 1420 and 675 <= mouse[1] <= 755:
             if selectedShip is not None:
                 #afficher un rectagle blanc pour cacher le playerPA
                 pygame.draw.rect(win, (242, 251, 255), (1445, 20+15+180+45+58, 25, 30))
@@ -321,9 +321,8 @@ def chooseActions(win, m, player, selectedShip, p1, p2, mouse, click):
             else:
                 print("Aucun bateau sélectionné pour avancer")
 
-    #Bouton Tourner gauche
-    if 1290 <= mouse[0] <= 1370 and 775 <= mouse[1] <= 855:
-        if click[0] == 1:
+        #Bouton Tourner gauche
+        if 1290 <= mouse[0] <= 1370 and 775 <= mouse[1] <= 855:
             if selectedShip is not None:
                 #afficher un rectagle blanc pour cacher le playerPA
                 pygame.draw.rect(win, (242, 251, 255), (1445, 20+15+180+45+58, 25, 30))
@@ -352,9 +351,8 @@ def chooseActions(win, m, player, selectedShip, p1, p2, mouse, click):
             else:
                 print("Aucun bateau sélectionné pour tourner")
 
-    #Bouton Tourner droite
-    if 1390 <= mouse[0] <= 1470 and 775 <= mouse[1] <= 855:
-        if click[0] == 1:
+        #Bouton Tourner droite
+        if 1390 <= mouse[0] <= 1470 and 775 <= mouse[1] <= 855:
             if selectedShip is not None:
                 #afficher un rectagle blanc pour cacher le playerPA
                 pygame.draw.rect(win, (242, 251, 255), (1445, 20+15+180+45+58, 25, 30))
@@ -384,10 +382,9 @@ def chooseActions(win, m, player, selectedShip, p1, p2, mouse, click):
                 print("Aucun bateau sélectionné pour tourner")
 
 
-    #Bouton Reculer
-    if 1340 <= mouse[0] <= 1420 and 875 <= mouse[1] <= 955:
-        if click[0] == 1:
-
+        #Bouton Reculer
+        if 1340 <= mouse[0] <= 1420 and 875 <= mouse[1] <= 955:
+            
             if selectedShip is not None:
                 #afficher un rectagle blanc pour cacher le playerPA
                 pygame.draw.rect(win, (242, 251, 255), (1445, 20+15+180+45+58, 25, 30))
@@ -404,9 +401,8 @@ def chooseActions(win, m, player, selectedShip, p1, p2, mouse, click):
             else:
                 print("Aucun bateau sélectionné pour reculer")
 
-    #Bouton Tirer
-    if 1630 <= mouse[0] <= 1710 and 675 <= mouse[1] <= 755:
-        if click[0] == 1:
+        #Bouton Tirer
+        if 1630 <= mouse[0] <= 1710 and 675 <= mouse[1] <= 755:
             if selectedShip is not None:
                 print("tirer")
 

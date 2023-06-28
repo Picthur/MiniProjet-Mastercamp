@@ -84,34 +84,39 @@ def initWindow():
     return player1.name, player2.name
 
 
-def drawShipsSelection(player, selected_ship):
+def drawShipsSelection(player, selected_ship, p1, p2):
     #Affichier les bateaux du joueur alignés l'ordre de taille
 
     colorP1 = (224, 90, 12)
     colorP2 = (97, 143, 255)
 
     if player.get_id() == 1:
+        p = p1
         boatName = "S1_"
         color = colorP1
     else:
+        p = p2
         boatName = "S2_"
         color = colorP2
 
     for ship in player.ship:
         ###### Affichage du bateau de taille 5 ######
-        if selected_ship is not None and selected_ship != player.ship[3]:
+        if selected_ship is not None and selected_ship != p.ship[3]:
             BoatImg_5 = pygame.image.load("./assets/unselected/" + boatName + "5_unselected.png")
         else:
             BoatImg_5 = pygame.image.load("./assets/shipsImg/" + boatName + "5.png")
         BoatImg_5 = pygame.transform.scale(BoatImg_5, (40, 200))
 
         #point de vie du bateau
-        if len(player.ship) < 4:
+        #vérifier si p.ship[3] est dans player.ship
+        
+        if p.ship[3] not in player.ship:
             heatlh = str(0)
             maxhealth = str(5)
         else:
             heatlh = str(player.ship[3].health)
             maxhealth = str(player.ship[3].maxhealth)
+        
 
         #Affichage des points de vie du bateau
         pygame.draw.rect(win, (242, 251, 255), (1400-2, 400 + 200 + 2, 50, 30))
@@ -122,19 +127,19 @@ def drawShipsSelection(player, selected_ship):
 
 
         ###### Affichage du bateau de taille 4 ######
-        if selected_ship is not None and selected_ship != player.ship[2]:
+        if selected_ship is not None and selected_ship != p.ship[2]:
             BoatImg_4 = pygame.image.load("./assets/unselected/" + boatName + "4_unselected.png")
         else:
             BoatImg_4 = pygame.image.load("./assets/shipsImg/" + boatName + "4.png")
         BoatImg_4 = pygame.transform.scale(BoatImg_4, (40, 160))
 
         #point de vie du bateau
-        if len(player.ship) < 3:
+        if p.ship[2] not in player.ship:
             heatlh = str(0)
-            maxhealth = str(3)
+            maxhealth = str(5)
         else:
-            heatlh = str(player.ship[2].health)
-            maxhealth = str(player.ship[2].maxhealth)
+            heatlh = str(player.ship[3].health)
+            maxhealth = str(player.ship[3].maxhealth)
 
         #Affichage des points de vie du bateau
         pygame.draw.rect(win, (242, 251, 255), (1400-2 + 60, 400 + 200 + 2, 50, 30))
@@ -145,14 +150,14 @@ def drawShipsSelection(player, selected_ship):
         
 
         ###### Affichage du bateau de taille 3 ######
-        if selected_ship is not None and selected_ship != player.ship[1]:
+        if selected_ship is not None and selected_ship != p.ship[1]:
             BoatImg_3 = pygame.image.load("./assets/unselected/" + boatName + "3_unselected.png")
         else:
             BoatImg_3 = pygame.image.load("./assets/shipsImg/" + boatName + "3.png")
         BoatImg_3 = pygame.transform.scale(BoatImg_3, (40, 120))
 
         #point de vie du bateau
-        if len(player.ship) < 2:
+        if p.ship[1] not in player.ship:
             heatlh = str(0)
             maxhealth = str(3)
         else:
@@ -173,14 +178,14 @@ def drawShipsSelection(player, selected_ship):
 
 
         ###### Affichage du bateau de taille 2 ######
-        if selected_ship is not None and selected_ship != player.ship[0]:
+        if selected_ship is not None and selected_ship != p.ship[0]:
             BoatImg_2 = pygame.image.load("./assets/unselected/" + boatName + "2_unselected.png")
         else:
             BoatImg_2 = pygame.image.load("./assets/shipsImg/" + boatName + "2.png")
         BoatImg_2 = pygame.transform.scale(BoatImg_2, (40, 80))
 
         #point de vie du bateau
-        if len(player.ship) < 1:
+        if p.ship[0] not in player.ship:
             heatlh = str(0)
             maxhealth = str(2)
         else:
@@ -235,7 +240,7 @@ def drawWeapon():
     win.blit(Weapon2Icon, (1628, 875))
 
 
-def drawInfosZone(player):
+def drawInfosZone(player, p1, p2):
     pygame.draw.rect(win, (0, 0, 0), (1180, 20, 700, 1020), 5, border_radius=10)
 
     TitleImg = pygame.image.load("./assets/TitleGame.png")
@@ -257,8 +262,6 @@ def drawInfosZone(player):
             PlayerName = font.render(player.name, True, (97, 143, 255))
             PlayerPA = font.render(str(player.action), True, (97, 143, 255))
 
-    # w = 80
-    # h = 40
     #modif de la taille du texte en fonction de la taille du nom du joueur
     w = len(player.name) * 10
     h = 40
@@ -286,7 +289,7 @@ def drawInfosZone(player):
     pygame.draw.rect(win, color, (1645, 20 + 15 + 180 + 45 + 55, 180, 40), 2, border_radius=10)
 
 
-    drawShipsSelection(player, None)  
+    drawShipsSelection(player, None, p1, p2)  
     drawMoveButton()   
     drawWeapon()
 
@@ -323,13 +326,6 @@ def victory(player):
     QuitText = pygame.transform.scale(QuitText, (130, 30))
     win.blit(QuitText, (915, 900))
     pygame.draw.rect(win, (255, 255, 255), (900, 900 - 5, 180, 40), 2, border_radius=10)
-    
-# mouse = pygame.mouse.get_pos()
-# click = pygame.mouse.get_pressed()
-
-# if 1645 <= mouse[0] <= 1645 + 180 and 20 + 15 + 180 + 45 + 58 <= mouse[1] <= 20 + 15 + 180 + 45 + 58 + 40:
-#     if click[0] == 1:
-#         return False
         
     pygame.display.update()
 

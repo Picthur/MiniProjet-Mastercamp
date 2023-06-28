@@ -22,6 +22,8 @@ def Attacked(s: Ship, w:Weapon, m: Map, p1: Player, p2: Player):
         eraseShip(s, m.matrix)
         p.removeShip(s)
         m.removeShipMap(s)
+        s.health = 0
+
         
 
 
